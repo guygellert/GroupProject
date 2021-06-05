@@ -19,10 +19,16 @@ namespace Caveret.Controllers
             _context = context;
         }
 
-        protected void Button_Click(object sender, EventArgs e)
+        public async Task<IActionResult> Search(int queryId)
         {
-            //Do somthing
-            Console.WriteLine(sender);
+            ViewData["catagories"] = _context.Catagories;
+            var q = from a in _context.Products.Include(a => a.catagory)
+                    where (a.catagoryId.Equals(queryId))
+                    orderby a.productName descending
+                    select a; // new { Id = a.Id, Summary = a.Title + a.Body.Substring(0, 50) };
+
+            var m2MWithSearchContext = _context.Products.Include(a => a.catagory).Where(a => (a.catagoryId.Equals(queryId)));
+            return View("Index", await m2MWithSearchContext.ToListAsync());
         }
 
         // GET: Products
