@@ -1,51 +1,535 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Caveret</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta name="viewport" content="width=device-width">
+    <title>SidebarMenu</title>
+    <link href="/aspnetmvc/Content/Site.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <style rel="stylesheet" id="themelink"></style>
+    <link href="https://cdn.syncfusion.com/ej2/material.css" rel="stylesheet">
+    <script type="text/javascript">
+        if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"><\/script>');
+        }
+    </script>
+    <script id="sample-datasource" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-signals/1.0.0/js-signals.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossroads/0.12.0/crossroads.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hasher/1.2.0/hasher.min.js"></script>
+    <script src="/aspnetmvc/scripts/samplelist.js"></script>
+    <script src="/aspnetmvc/scripts/search-index.js"></script>
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Caveret</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
+<body class="e-lib e-touch">
+    <!-- sample level element  -->
+    <div id="wrapper">
+        <div class="col-lg-12 col-sm-12 col-md-12">
+            <div class="header-section dock-menu" id="header">
+                <ul class="header-list">
+                    <li id="hamburger" class="icon-menu icon list" (click)="toggle()"></li>
+                    <input type="text" placeholder="Search..." class="search-icon list">
+                    <li class="right-header list">
+                        <div class="horizontal-menu">
+                            <!-- menu element declaration-->
+                            <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar" class="e-control e-menu e-lib e-menu-parent" role="menubar" tabindex="0"></ul></div>
+                        </div>
+                    </li>
+                    <li class="right-header list support">Support</li>
+                </ul>
+            </div>
+            <!-- sidebar element declaration-->
+            <!-- end of sidebar element -->
+            <!-- main content declaration -->
+            <div class="main-content e-sidebar-context" id="maintext">
+                <div id="sidebar-menu" class="e-control e-sidebar e-lib e-sidebar-absolute e-right e-dock e-transition e-touch e-open e-push" style="width: 220px; z-index: 1000">
+                    <div class="dock-menu">
+                        <!-- normal state element declaration -->
+                        <div class="main-menu">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">מוצרים</a>
-                        </li>
-                    </ul>
+
+                            <p class="main-menu-header">MAIN</p>
+                            <div>
+                                <!-- menu element declaration-->
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="action">
+                            <p class="main-menu-header">ACTION</p>
+                            <button class="e-btn action-btn" id="action-button">Checkout</button>
+                        </div>
+                        <!-- end of normal state element declaration -->
+                    </div>
+                </div><div class="content e-content-animation" style="transform: translateX(0px); margin-left: 220px;">
+
+                    <img class="esh-catalog-title" src="~/images/main_banner.jpg" style="height: 260px; width: 100% " />
+
+                    <div class="container">
+                        <main role="main" class="pb-3">
+                            @RenderBody()
+                        </main>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <!--end of main content declaration -->
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Caveret - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            sidebarInstance = document.getElementById("sidebar-menu").ej2_instances[0];
+            // Expand the Sidebar
+            document.getElementById('hamburger').addEventListener('click', function () {
+                sidebarInstance.toggle();
+            });
+
+        });
+    </script>
+    <style>
+
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: white;
+            opacity: 1; /* Firefox */
+        }
+
+        /* header-section styles */
+        #header.header-section,
+        #header .search-icon {
+            height: 50px;
+        }
+
+        #header #hamburger.icon-menu {
+            font-size: 24px;
+            float: left;
+            line-height: 50px;
+        }
+
+        #header .right-header {
+            height: 50px;
+            padding: 7px;
+            float: right;
+        }
+
+        #header .list {
+            list-style: none;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 35px;
+        }
+
+        #header .header-list {
+            padding-left: 15px;
+            margin: 0;
+        }
+
+
+        /* text input styles */
+        #header .search-icon {
+            float: left;
+            padding-left: 15px;
+            border: 0px solid #0b8954 !important;
+            background-color: #0b8954;
+            cursor: text;
+            width: 5em;
+            color: white !important;
+        }
+
+            #header .search-icon:focus {
+                outline: none;
+                cursor: default;
+            }
+
+        /* end of text input styles */
+        /* end of header-section styles */
+
+        /* content area styles */
+        #maintext.main-content {
+            height: 100vh;
+            z-index: 1000;
+        }
+
+        #maintext .content {
+            text-align: center;
+            font-size: 32px;
+            color: #1784c7;
+        }
+
+        /* end of content area styles */
+
+        /* menu styles */
+        /* horizontal-menu styles */
+        #header .header-list .horizontal-menu .e-menu-item {
+            height: 35px;
+            vertical-align: middle;
+            font-size: 16px;
+            line-height: 35px;
+        }
+
+        #header .e-menu-item .e-caret {
+            line-height: 35px;
+        }
+
+        /* end of horizontal-menu styles */
+        /* vertical-menu styles */
+
+        #sidebar-menu .e-menu-wrapper ul .e-menu-item.e-menu-caret-icon {
+            width: 220px;
+        }
+
+        #sidebar-menu .e-menu-wrapper ul .e-menu-item:hover, .e-menu-item.e-focused:hover {
+            background-color: #3e454c !important;
+        }
+
+        /* end of vertical-menu styles */
+        /* end of menu styles */
+
+        /* Sidebar styles */
+        /* docksidebar styles */
+        .dock-menu .e-menu-wrapper ul .e-menu-item .e-caret,
+        #header .search-icon,
+        #sidebar-menu .action-btn,
+        #header .e-menu-item .e-caret,
+        .dock-menu .e-menu-wrapper ul .e-menu-item {
+            color: #fff !important;
+        }
+
+        .dock-menu.e-close .e-menu-wrapper ul .e-menu-item {
+            width: 50px;
+        }
+
+        .dock-menu.e-close ul .e-menu-item.e-menu-caret-icon {
+            padding-right: 12px;
+        }
+
+        #sidebar-menu.e-dock.e-close .e-menu-wrapper ul .e-menu-item .e-caret,
+        #sidebar-menu.e-dock.e-close .main-menu-header,
+        #sidebar-menu.e-dock.e-close .action-btn {
+            display: none;
+        }
+
+        #sidebar-menu.e-dock.e-close .e-menu-wrapper ul .e-menu-item.e-menu-caret-icon,
+        #sidebar-menu.e-dock.e-close .e-menu-wrapper ul.e-vertical {
+            min-width: 0;
+            width: 50px !important;
+        }
+
+        #sidebar-menu.e-dock.e-close .e-menu-wrapper ul.e-menu {
+            font-size: 0;
+        }
+
+        #sidebar-menu.e-dock.e-close .e-menu-item .e-menu-icon {
+            font-size: 20px;
+            padding: 0;
+        }
+
+        #sidebar-menu,
+        #sidebar-menu ul,
+        #header ul,
+        .dock-menu .e-menu-wrapper,
+        .dock-menu.e-menu-wrapper,
+        .dock-menu.e-menu-wrapper ul > *,
+        .dock-menu .e-menu-wrapper ul > * {
+            background-color: #0b8954 !important;
+            color: #fff !important;
+            overflow: hidden;
+        }
+
+            /* end of docksidebar styles */
+            /*end of  Sidebar styles */
+
+            /*main-menu-header  styles */
+            #sidebar-menu .main-menu-header {
+                padding: 4px 0px 0px 18px;
+                color: white;
+            }
+
+            /*end of main-menu-header  styles */
+
+            /*button styles */
+            #sidebar-menu .action-btn {
+                margin-left: 16px;
+                width: 165px;
+                height: 30px;
+                font-size: 13px;
+                border-radius: 5px;
+            }
+
+            #sidebar-menu .action-btn {
+                background-color: #1784c7;
+            }
+        /* custom code start */
+        /*end of button styles */
+        .sb-content-tab #wrapper {
+            display: none;
+        }
+
+        .center {
+            text-align: center;
+            display: none;
+            font-size: 13px;
+            font-weight: 400;
+            margin-top: 20px;
+        }
+
+        .sb-content-tab .center {
+            display: block;
+        }
+
+        #sidebar-menu {
+            margin-left: -1px;
+        }
+
+        .col-md-12, body {
+            padding: 0;
+        }
+        /*body styles */
+        body {
+            margin: 0;
+            overflow-y: hidden;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /*end of body styles */
+
+        /*icon styles */
+
+
+        #sidebar-menu .icon-sweets:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-salty:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-cereal:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-drinks:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-electric:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-for_home:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-textile:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-leisure:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon-phone:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+
+        #header .icon-menu:before {
+            content: '\f35a';
+            font-family: "Font Awesome 5 Free";
+        }
+
+        #sidebar-menu .icon,
+        #header #hamburger.icon-menu {
+            font-family: 'fontello';
+        }
+
+        #sidebar-menu .e-menu-icon::before {
+            color: white;
+        }
+
+        /*icon styles */
+    </style>
+
+
+    <script>
+        new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+            "hoverDelay": 0.0,
+            "items": [
+                {
+                    "text": "Account",
+                    "items": [
+                        {
+                            "text": "Profile"
+                        },
+                        {
+                            "text": "Sign out"
+                        }
+                    ]
+                }
+            ]
+        }).appendTo("#horizontal-menubar");
+        new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+            "hoverDelay": 0.0,
+            "items": [
+                {
+                    "text": "Sweets",
+                    "iconCss": "icon-sweets icon",
+                    "items": [
+                        {
+                            "text": "All Data"
+                        },
+                        {
+                            "text": "Category2"
+                        },
+                        {
+                            "text": "Category3"
+                        }
+                    ]
+                },
+                {
+                    "text": "Salty",
+                    "iconCss": "icon-salty icon",
+                    "items": [
+                        {
+                            "text": "Change Profile"
+                        },
+                        {
+                            "text": "Add Name"
+                        },
+                        {
+                            "text": "Add Details"
+                        }
+                    ]
+                },
+                {
+                    "text": "Cereal",
+                    "iconCss": "icon-cereal icon",
+                    "items": [
+                        {
+                            "text": "Message"
+                        },
+                        {
+                            "text": "Facebook"
+                        },
+                        {
+                            "text": "Twitter"
+                        }
+                    ]
+                },
+                {
+                    "text": "Drinks",
+                    "iconCss": "icon-drinks icon",
+                    "items": [
+                        {
+                            "text": "Category1 "
+                        },
+                        {
+                            "text": "Category2"
+                        },
+                        {
+                            "text": "Category3"
+                        }
+                    ]
+                },
+                {
+                    "text": "Electric",
+                    "iconCss": "icon-electric icon",
+                    "items": [
+                        {
+                            "text": "All Comments"
+                        },
+                        {
+                            "text": "Add Comments"
+                        },
+                        {
+                            "text": "Delete Comments"
+                        }
+                    ]
+                },
+                {
+                    "text": "For Home",
+                    "iconCss": "icon-for_home icon",
+                    "items": [
+                        {
+                            "text": "Add Name"
+                        },
+                        {
+                            "text": "Add Mobile Number"
+                        }
+                    ]
+                },
+                {
+                    "text": "Textile",
+                    "iconCss": "icon-textile icon",
+                    "items": [
+                        {
+                            "text": "Mobile User"
+                        },
+                        {
+                            "text": "Laptop User"
+                        },
+                        {
+                            "text": "Desktop User"
+                        }
+                    ]
+                },
+                {
+                    "text": "Leisure",
+                    "iconCss": "icon-leisure",
+                    "items": [
+                        {
+                            "text": "Change Profile"
+                        },
+                        {
+                            "text": "Add Name"
+                        },
+                        {
+                            "text": "Add Details"
+                        }
+                    ]
+                },
+                {
+                    "text": "Phone",
+                    "iconCss": "icon-phone",
+                    "items": [
+                        {
+                            "text": "Facebook"
+                        },
+                        {
+                            "text": "Mobile"
+                        }
+                    ]
+                }
+            ],
+            "orientation": "Vertical"
+        }).appendTo("#main-menubar");
+        new ejs.navigations.Sidebar({
+            "dockSize": "50px",
+            "enableDock": true,
+            "target": ".main-content",
+            "width": "220px",
+            "zIndex": 1000.0
+        }).appendTo("#sidebar-menu");
+    </script>
+
+
 </body>
 </html>
