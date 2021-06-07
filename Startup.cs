@@ -11,6 +11,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Caveret.Data;
 
+using Caveret.Models;
+
+
+
+using Microsoft.AspNetCore.Identity;
+
+
 namespace Caveret
 {
     public class Startup
@@ -29,6 +36,14 @@ namespace Caveret
 
             services.AddDbContext<CaveretContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CaveretContext")));
+
+            string connectionString = Configuration.GetConnectionString("AppDBContext");
+            services.AddDbContext<AppDBContext>(options =>
+                 options.UseSqlServer(Configuration.GetConnectionString("AppDBContext")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
