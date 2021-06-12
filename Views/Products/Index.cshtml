@@ -1,109 +1,425 @@
-﻿@*@model IEnumerable<Products>
+﻿
+@*@page "{CurrentPage:int?}"*@
 
-    @{
-        ViewData["Title"] = "Index";
-    }
+@model IEnumerable<Caveret.Models.Products>
+@*@model Caveret.Controllers.ProductsController*@
+<h1>המוצרים שלנו</h1>
 
-    <h1>Index</h1>
+<h2>אז מה בא לנו היום?</h2>
+<div class="row">
+    <div class="col-1">
+            <form asp-action="Search" class="">
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.productName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.imgUrl)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.productName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.imgUrl)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@
+                <div class="card text-center">
+                    <div class="card-header">חיפוש</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="row">
 
-
-@{
-    ViewData["Title"] = "המוצרים שלנו";
-}
-
-@model List<Products>
-<h1>@ViewData["Title"]</h1>
-
-<p>אז מה בא לנו היום?</p>
-
-<div class="container">
-    <div class="row">
-        <form asp-action="Search">
-
-
-
-            <div class="col">
-                <div class="list-group">
-                    @foreach (var cat in ViewBag.catagories)
-                    {
-                        <input name="queryId" type="submit" class="list-group-item list-group-item-action " title="cat.catagorieName"  value=@cat.Id />
-                    }
-                </div>
-            </div>
-        </form>
-        <div>
-
-            <table>
-                <tr>
- 
-                    @foreach (var product in Model)
-                    {
-                        <td>
-                            <div class="card" style="height: 25rem; width: 18rem; ">
-                                <img style="height: 40%;" src=@product.imgUrl class="card-img-top card-img" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.productName</h5>
-                                    <p class="card-text">@product.description</p>
-                                    <p>@product.price</p>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="#" class="btn btn-primary">הכנס להזמנה</a>
+                                        <div class="col-md-6">
+                                            <select name="queryId" class="form-control" asp-items="@ViewBag.catagories"></select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label name="id" class="control-label labelStyle">קטגוריה:</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </td>
-                    }
-                </tr>
-            </table>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <input name="queryName" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label name="name" class="control-label labelStyle">שם מוצר :</label>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                @* <input class="felectLayout" type="range" min="1" max="100" value="50" name="queryMaxPrice" />*@
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <input name="queryMaxPrice" type="range" min="0" max="999999" value="0" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label name="maxPrice" class="control-label labelStyle">עד מחיר:</label>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                                <div class="card-footer">
+
+                                    <input type="submit" value="חיפוש" class="btn btn-primary" />
+                                </div>
+                            
+                        </div>
+                    </div>
+            </form>
+        </div>
+    <div>
+        @foreach (var product in Model)
+        {
+    <div class="col-xs-12 col-sm-6 col-md-4 p-2">
+        <div class="product-grids product-item">
+            <div class="product-img">
+                <a asp-action="Details" asp-route-id="@product.Id">
+                    <img class="image-product" src="@product.imgUrl" alt="" />
+                </a>
+            </div>
+            <h4>@product.productName</h4>
+            <h5>₪@product.price</h5>
         </div>
     </div>
+}
+    </div>
 </div>
+<style>
+    a.navbar-brand {
+        white-space: normal;
+        text-align: center;
+        word-break: break-all;
+    }
 
-<div id="productList">
-</div>
+    /* Sticky footer styles
+    -------------------------------------------------- */
+    html {
+        font-size: 14px;
+    }
 
+    .border-top {
+        border-top: 1px solid #e5e5e5;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .box-shadow {
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    }
+
+    button.accept-policy {
+        font-size: 1rem;
+        line-height: inherit;
+    }
+
+    /* Sticky footer styles
+    -------------------------------------------------- */
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        white-space: nowrap;
+        /* Set the fixed height of the footer here */
+        height: 60px;
+        line-height: 60px; /* Vertically center the text there */
+    }
+
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: left;
+    }
+
+    .col-md-4 {
+        width: 33.33333333%;
+    }
+
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        padding-bottom: 15px
+    }
+
+    .product-img {
+        position: relative;
+        box-shadow: 0 0 1px #bbb;
+        padding: 10px;
+    }
+
+    .image-product {
+        padding: 10px;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .recommendation .product-item .product-img {
+        height: 284px;
+    }
+
+    .product-img .p-mask, .row .product .vm-product-media-container .p-mask {
+        opacity: 0;
+        visibility: hidden;
+        background: rgba(0, 229, 139, 0.52);
+        bottom: 0%;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        -webkit-transform: translate3d( 0px, 100%, 0px );
+        -moz-transform: translate3d( 0px, 100%, 0px );
+        -ms-transform: translate3d( 0px, 100%, 0px );
+        -o-transform: translate3d( 0px, 100%, 0px );
+        transform: translate3d( 0px, 100%, 0px );
+        -webkit-transition: all .5s ease 0s;
+        -moz-transition: all .5s ease 0s;
+        transition: all .5s ease 0s;
+        text-align: left;
+    }
+
+        .product-img .p-mask .p-desc {
+            color: #a3a3a3;
+            position: relative;
+            display: block;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            font-size: 1em;
+        }
+
+    .product-img:hover .p-mask, .row .product:hover .p-mask {
+        opacity: 1;
+        visibility: visible;
+        -webkit-transform: translate3d( 0px, 0px, 0px );
+        -moz-transform: translate3d( 0px, 0px, 0px );
+        -ms-transform: translate3d( 0px, 0px, 0px );
+        -o-transform: translate3d( 0px, 0px, 0px );
+        transform: translate3d( 0px, 0px, 0px );
+        left: 0;
+    }
+
+    .product-item .product-img {
+        height: 312px;
+        overflow: hidden;
+    }
+
+        .product-item .product-img > img {
+            width: 100%;
+        }
+
+    .product-img .p-mask, .row .product .vm-product-media-container .p-mask {
+        padding: 0;
+    }
+
+    .product-item .product-img {
+        height: 293px;
+    }
+
+    .product-item h4 {
+        font-size: 12px;
+    }
+
+    .product-item h5 {
+        font-size: 10px;
+    }
+
+    .top-product-grids h4, .product-grids h4 {
+        font-size: 18px;
+        color: #484848;
+        margin: 10px 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        font-family: 'Source Sans Pro', sans-serif;
+        letter-spacing: 1px;
+    }
+
+    .product-grids h4 {
+        font-size: 18px;
+        color: #484848;
+        margin: 10px 0;
+    }
+
+    .product-grids h4 {
+        height: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 24px;
+    }
+
+    .product-grids h5 {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .fade {
+        opacity: 0;
+        -webkit-transition: opacity .15s linear;
+        -o-transition: opacity .15s linear;
+        transition: opacity .15s linear;
+    }
+
+        .fade.in {
+            opacity: 1;
+        }
+
+    .modal-body {
+        position: relative;
+        padding: 15px;
+    }
+
+    .modal.fade .modal-dialog {
+        -webkit-transition: -webkit-transform .3s ease-out;
+        -o-transition: -o-transform .3s ease-out;
+        transition: transform .3s ease-out;
+        -webkit-transform: translate(0, -25%);
+        -ms-transform: translate(0, -25%);
+        -o-transform: translate(0, -25%);
+        transform: translate(0, -25%);
+    }
+
+    .modal.in .modal-dialog {
+        -webkit-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        -o-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        margin: 10px;
+    }
+
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    }
+
+    .modal-content {
+        position: relative;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 6px;
+        outline: 0;
+        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    }
+
+    .modal-header {
+        padding: 15px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+        .modal-header .close {
+            margin-top: -2px;
+        }
+
+    .single-top-left {
+        margin-left: 5%;
+        width: 40%;
+    }
+
+    .img {
+        width: 100%
+    }
+
+    .vcenter {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .img-responsive,
+    .thumbnail > img,
+    .thumbnail a > img,
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .flex-viewport .slides li img {
+        width: 85%;
+        float: left;
+    }
+
+    .slides-image {
+        width: 100%;
+    }
+
+    .flex-viewport {
+        width: 230px;
+    }
+
+    .pagination {
+        text-align: center;
+        margin: 75px 0 50px 0;
+        position: absolute;
+        bottom: 20px;
+    }
+
+    .pagination {
+        text-decoration: none;
+        font-size: 14px;
+        font-family: arial;
+        color: #000;
+        padding: 4px 8px;
+        border: 1px solid #99e1e4;
+    }
+
+        .pagination .prev,
+        .pagination .next {
+            margin: 0 15px;
+            border-radius: 5px;
+            padding: 4px 11px;
+        }
+
+    .logo {
+        width: 100%;
+    }
+
+    /** DETAILS */
+
+    .products {
+        background-size: cover;
+    }
+
+        .products .title h3 {
+            text-align: left;
+        }
+
+        .products .title p {
+            text-align: left;
+        }
+
+        .products .title p {
+            margin: 1em 0;
+            color: #EAEAEA;
+            text-align: left;
+        }
+
+        .products .panel-title {
+            text-align: left;
+        }
+        .labelStyle{
+            font-size: medium;
+            direction: rtl;
+        }
+</style>

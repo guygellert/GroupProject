@@ -1,23 +1,39 @@
 ﻿using Caveret.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-
-/// <summary>
-/// Summary description for Class1
-/// </summary>
-public class Products
+namespace Caveret.Models
 {
+    /// <summary>
+    /// Summary description for Class1
+    /// </summary>
+    public class Products
+    {
+        public int Id { get; set; }
 
+        [DataType(DataType.Text)]
+        [MaxLength(30)]
+        [Required(ErrorMessage = "Think About The Customers! Product Must Have A Name")]
+        [Display(Name = "שם מוצר")]
+        public String productName { get; set; }
 
-    public int Id { get; set; }
-    public String productName { get; set; }
-    [DataType(DataType.Currency)]
-    public double price { get; set; }
-    public String description { get; set; }
-    public String imgUrl { get; set; }
+        [DataType(DataType.Currency)]
+        [MaxLength(6)]
+        [Required(ErrorMessage = "product must have a price bigger than 0")]
+        [Display(Name = "מחיר")]
+        public double price { get; set; }
 
-    public int catagoryId { get; set; }
-    public Catagories catagory { get; set; }
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "תיאור")]
+        public String description { get; set; }
 
+        [DataType(DataType.ImageUrl)]
+        [Display(Name = "כתובת תמונה")]
+        public String imgUrl { get; set; }
 
+        [Required(ErrorMessage = "Every Product Have A Category Choose One")]
+        [Display(Name = "קטגוריה")]
+        public int catagoryId { get; set; }
+        public Catagories catagory { get; set; }
+
+    }
 }

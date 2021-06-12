@@ -14,28 +14,46 @@ namespace Caveret.Controllers
     {
         private readonly CaveretContext _context;
 
+       
+
+
+
         public ProductsController(CaveretContext context)
         {
             _context = context;
         }
 
-        public async Task<IActionResult> Search(int queryId)
+        public async Task<IActionResult> Search(int queryId, string queryName,int queryMaxPrice)
         {
-            ViewData["catagories"] = _context.Catagories;
+            string productName;
+            productName = queryName;
+            if (productName == null)
+            {
+                productName = "";
+            }
+            ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
             var q = from a in _context.Products.Include(a => a.catagory)
-                    where (a.catagoryId.Equals(queryId))
+                    where (a.catagoryId.Equals(queryId) && a.productName.Contains(productName) &&
+                            a.price <= queryMaxPrice)
                     orderby a.productName descending
                     select a; // new { Id = a.Id, Summary = a.Title + a.Body.Substring(0, 50) };
 
-            var m2MWithSearchContext = _context.Products.Include(a => a.catagory).Where(a => (a.catagoryId.Equals(queryId)));
+            var m2MWithSearchContext = _context.Products.Include(a => a.catagory).Where(a => 
+            (a.catagoryId.Equals(queryId) && a.productName.Contains(productName) && a.price <= queryMaxPrice));
             return View("Index", await m2MWithSearchContext.ToListAsync());
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            ViewData["catagories"] = _context.Catagories;
-            return View(await _context.Products.ToListAsync());
+            
+            ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
+
+            var prod = from p in _context.Products
+                                  join s in _context.Stock on p.Id equals s.productId
+                                  where s.quantity >= 0
+                                  select p;
+            return View(await prod.ToListAsync());
         }
 
         // GET: Products/Details/5
