@@ -37,10 +37,9 @@
                     <li class="right-header list">
                         <div class="horizontal-menu">
                             <!-- menu element declaration-->
-                            <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar" class="e-control e-menu e-lib e-menu-parent" role="menubar" tabindex="0"></ul></div>
+                            <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
                         </div>
                     </li>
-                    <li class="right-header list support">Support</li>
                 </ul>
             </div>
             <!-- sidebar element declaration-->
@@ -51,9 +50,8 @@
                     <div class="dock-menu">
                         <!-- normal state element declaration -->
                         <div class="main-menu">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 
-                            <p class="main-menu-header">MAIN</p>
+                            <p class="main-menu-header">CATEGORIES</p>
                             <div>
                                 <!-- menu element declaration-->
                                 <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
@@ -63,14 +61,20 @@
                         </div>
 
                         <div class="action">
-                            <p class="main-menu-header">ACTION</p>
+
+                            <p class="main-menu-header">ACTIONS</p>
+                            <div>
+                                <!-- menu element declaration-->
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="action-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+
+                            </div>
                             <button class="e-btn action-btn" id="action-button">Checkout</button>
                         </div>
                         <!-- end of normal state element declaration -->
                     </div>
                 </div><div class="content e-content-animation" style="transform: translateX(0px); margin-left: 220px;">
 
-                    <img class="esh-catalog-title" src="~/images/main_banner.jpg" style="height: 260px; width: 100% " />
+                    <img class="esh-catalog-title" src="~/images/third.webp" style="height: 260px; width: 100% " />
 
                     <div class="container">
                         <main role="main" class="pb-3">
@@ -138,11 +142,15 @@
         #header .search-icon {
             float: left;
             padding-left: 15px;
-            border: 0px solid #0b8954 !important;
-            background-color: #0b8954;
+            border: 0px solid #0a7ee1 !important;
+            background-color: #0a7ee1;
             cursor: text;
             width: 5em;
             color: white !important;
+        }
+
+        #header .account {
+            background-color: #0a7ee1 !important;
         }
 
             #header .search-icon:focus {
@@ -174,6 +182,7 @@
             vertical-align: middle;
             font-size: 16px;
             line-height: 35px;
+            background: #06e1bc !important;
         }
 
         #header .e-menu-item .e-caret {
@@ -235,24 +244,41 @@
 
         #sidebar-menu,
         #sidebar-menu ul,
-        #header ul,
         .dock-menu .e-menu-wrapper,
         .dock-menu.e-menu-wrapper,
         .dock-menu.e-menu-wrapper ul > *,
         .dock-menu .e-menu-wrapper ul > * {
-            background-color: #0b8954 !important;
+            color: #fff !important;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+            #sidebar-menu,
+            #sidebar-menu ul,
+            .dock-menu .e-menu-wrapper,
+            .dock-menu.e-menu-wrapper,
+            .dock-menu.e-menu-wrapper ul > *,
+            .dock-menu .e-menu-wrapper ul > * {
+                background-image: linear-gradient(90deg, #087ee1 10%, #05e8ba 90%) !important;
+                color: #fff !important;
+                overflow: hidden;
+            }
+
+
+        #header ul {
+            background-image: linear-gradient(315deg, #05e8ba 0%, #087ee1 74%) !important;
             color: #fff !important;
             overflow: hidden;
         }
 
-            /* end of docksidebar styles */
-            /*end of  Sidebar styles */
 
-            /*main-menu-header  styles */
-            #sidebar-menu .main-menu-header {
-                padding: 4px 0px 0px 18px;
-                color: white;
-            }
+        /* end of docksidebar styles */
+        /*end of  Sidebar styles */
+        /*main-menu-header  styles */
+        #sidebar-menu .main-menu-header {
+            padding: 4px 0px 0px 18px;
+            color: white;
+        }
 
             /*end of main-menu-header  styles */
 
@@ -304,7 +330,7 @@
 
         /*icon styles */
 
-
+/*
         #sidebar-menu .icon-sweets:before {
             content: '\f35a';
             font-family: "Font Awesome 5 Free";
@@ -349,7 +375,7 @@
             content: '\f35a';
             font-family: "Font Awesome 5 Free";
         }
-
+*/
 
         #header .icon-menu:before {
             content: '\f35a';
@@ -387,125 +413,76 @@
                 }
             ]
         }).appendTo("#horizontal-menubar");
+
         new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
             "items": [
                 {
+                    "text": "All Items",
+                    "iconCss": "icon-sweets icon",
+                    "items": [
+                    ]
+                },
+                {
                     "text": "Sweets",
                     "iconCss": "icon-sweets icon",
                     "items": [
-                        {
-                            "text": "All Data"
-                        },
-                        {
-                            "text": "Category2"
-                        },
-                        {
-                            "text": "Category3"
-                        }
                     ]
                 },
                 {
                     "text": "Salty",
                     "iconCss": "icon-salty icon",
                     "items": [
-                        {
-                            "text": "Change Profile"
-                        },
-                        {
-                            "text": "Add Name"
-                        },
-                        {
-                            "text": "Add Details"
-                        }
                     ]
                 },
                 {
                     "text": "Cereal",
                     "iconCss": "icon-cereal icon",
                     "items": [
-                        {
-                            "text": "Message"
-                        },
-                        {
-                            "text": "Facebook"
-                        },
-                        {
-                            "text": "Twitter"
-                        }
                     ]
                 },
                 {
                     "text": "Drinks",
                     "iconCss": "icon-drinks icon",
                     "items": [
-                        {
-                            "text": "Category1 "
-                        },
-                        {
-                            "text": "Category2"
-                        },
-                        {
-                            "text": "Category3"
-                        }
+                        //{
+                        //    "text": "Category1 "
+                        //},
+                        //{
+                        //    "text": "Category2"
+                        //},
+                        //{
+                        //    "text": "Category3"
+                        //}
                     ]
                 },
                 {
                     "text": "Electric",
                     "iconCss": "icon-electric icon",
                     "items": [
-                        {
-                            "text": "All Comments"
-                        },
-                        {
-                            "text": "Add Comments"
-                        },
-                        {
-                            "text": "Delete Comments"
-                        }
+               
                     ]
                 },
                 {
                     "text": "For Home",
                     "iconCss": "icon-for_home icon",
                     "items": [
-                        {
-                            "text": "Add Name"
-                        },
-                        {
-                            "text": "Add Mobile Number"
-                        }
+              
                     ]
                 },
                 {
                     "text": "Textile",
                     "iconCss": "icon-textile icon",
                     "items": [
-                        {
-                            "text": "Mobile User"
-                        },
-                        {
-                            "text": "Laptop User"
-                        },
-                        {
-                            "text": "Desktop User"
-                        }
+                  
                     ]
                 },
                 {
                     "text": "Leisure",
                     "iconCss": "icon-leisure",
                     "items": [
-                        {
-                            "text": "Change Profile"
-                        },
-                        {
-                            "text": "Add Name"
-                        },
-                        {
-                            "text": "Add Details"
-                        }
+                     
                     ]
                 },
                 {
@@ -523,6 +500,34 @@
             ],
             "orientation": "Vertical"
         }).appendTo("#main-menubar");
+
+        new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+            "hoverDelay": 0.0,
+            "items": [
+                {
+                    "text": "Branches",
+                    "iconCss": "icon-sweets icon",
+                    "items": [
+                    ]
+                },
+                {
+                    "text": "About Us",
+                    "iconCss": "icon-salty icon",
+                    "items": [
+                        {
+                            "text": "Facebook"
+                        },
+                        {
+                            "text": "Mobile"
+                        }
+                    ]
+                }
+
+            ],
+            "orientation": "Vertical"
+        }).appendTo("#action-menubar");
+
         new ejs.navigations.Sidebar({
             "dockSize": "50px",
             "enableDock": true,
