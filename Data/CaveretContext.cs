@@ -16,5 +16,7 @@ namespace Caveret.Data
         public DbSet<Caveret.Models.Catagories> Catagories { get; set; }
 
         public DbSet<Products> Products { get; set; }
+
+        public DbSet<Caveret.Models.Stock> Stock { get; set; }
     }
 }
