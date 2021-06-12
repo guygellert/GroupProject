@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Caveret.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Caveret.Data
 {
-    public class CaveretContext : DbContext
+    public class CaveretContext : IdentityDbContext<IdentityUser>
     {
         public CaveretContext (DbContextOptions<CaveretContext> options) : base(options)
         {

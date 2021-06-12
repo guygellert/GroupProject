@@ -37,11 +37,7 @@ namespace Caveret
             services.AddDbContext<CaveretContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CaveretContext")));
 
-            string connectionString = Configuration.GetConnectionString("AppDBContext");
-            services.AddDbContext<AppDBContext>(options =>
-                 options.UseSqlServer(Configuration.GetConnectionString("AppDBContext")));
-
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CaveretContext>();
 
 
         }
