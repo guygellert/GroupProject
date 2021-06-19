@@ -1,5 +1,6 @@
 ﻿using Caveret.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Caveret.Models
 {
@@ -29,10 +30,12 @@ namespace Caveret.Models
         [Display(Name = "כתובת תמונה")]
         public String imgUrl { get; set; }
 
-        [Required(ErrorMessage = "Every Product Have A Category Choose One")]
+        //[Required(ErrorMessage = "Every Product Have A Category Choose One")]
         [Display(Name = "קטגוריה")]
-        public int catagoryId { get; set; }
-        public Catagories catagory { get; set; }
+        //public int catagoryId { get; set; }
+        public List<Catagories> Catagories { get; set; }
+
+        public List<Order> orders { get; set; }
 
     }
 }

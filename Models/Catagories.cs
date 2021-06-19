@@ -13,6 +13,6 @@ namespace Caveret.Models
         [Required(ErrorMessage = "Think about the customers! you must give a name")]
         public String catagorieName { get; set; }
 
-        public List<Products> products;
+        public List<Products> products { get; set; }
     }
 }

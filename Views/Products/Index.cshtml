@@ -69,18 +69,21 @@
     <div>
         @foreach (var product in Model)
         {
-    <div class="col-xs-12 col-sm-6 col-md-4 p-2">
-        <div class="product-grids product-item">
-            <div class="product-img">
-                <a asp-action="Details" asp-route-id="@product.Id">
-                    <img class="image-product" src="@product.imgUrl" alt="" />
-                </a>
+        <a asp-action="Details" asp-route-id="@product.Id">
+            <div class="col-xs-12 col-sm-6 col-md-4 p-2">
+                <div class="product-grids product-item">
+                    <div class="product-img">
+
+                        <img class="image-product" src="@product.imgUrl" alt="" />
+
+                    </div>
+                    <h4>@product.productName</h4>
+                    <h5>₪@product.price</h5>
+                </div>
             </div>
-            <h4>@product.productName</h4>
-            <h5>₪@product.price</h5>
-        </div>
-    </div>
-}
+        </a>
+            }
+        
     </div>
 </div>
 <style>
