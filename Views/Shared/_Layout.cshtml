@@ -68,7 +68,17 @@
                                 <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="action-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
 
                             </div>
-                            <button class="e-btn action-btn" id="action-button">Checkout</button>
+                            @*<button class="e-btn action-btn" id="action-button">Checkout</button>*@
+                        </div>
+
+                        <div class="admin">
+
+                            <p class="main-menu-header">ADMIN</p>
+                            <div>
+                                <!-- menu element declaration-->
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="admin-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+
+                            </div>
                         </div>
                         <!-- end of normal state element declaration -->
                     </div>
@@ -253,6 +263,10 @@
             overflow: hidden;
         }
 
+        .e-menu-wrapper ul .e-menu-item .e-menu-url, .e-menu-container ul .e-menu-item .e-menu-url {
+            color: #fff !important;
+        }
+
             #sidebar-menu,
             #sidebar-menu ul,
             .dock-menu .e-menu-wrapper,
@@ -404,10 +418,8 @@
                     "text": "Account",
                     "items": [
                         {
-                            "text": "Profile"
-                        },
-                        {
-                            "text": "Sign out"
+                            "text": "Sign In",
+                            "url": "/account/login",
                         }
                     ]
                 }
@@ -421,6 +433,8 @@
                 {
                     "text": "All Items",
                     "iconCss": "icon-sweets icon",
+                    "url": "Products",
+                    "color": "white",
                     "items": [
                     ]
                 },
@@ -493,7 +507,7 @@
                             "text": "Facebook"
                         },
                         {
-                            "text": "Mobile"
+                            "text": "Video"
                         }
                     ]
                 }
@@ -519,7 +533,7 @@
                             "text": "Facebook"
                         },
                         {
-                            "text": "Mobile"
+                            "text": "Video"
                         }
                     ]
                 }
@@ -528,6 +542,26 @@
             "orientation": "Vertical"
         }).appendTo("#action-menubar");
 
+        new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+            "hoverDelay": 0.0,
+            "items": [
+                {
+                    "text": "Add Item",
+                    "iconCss": "icon-sweets icon",
+                    "url": "Products/Create",
+                    "items": [
+                        {
+                            "text": "Edit First",
+                            "iconCss": "icon-sweets icon",
+                            "url": "Products/Edit/1",                        },
+                    ]
+                },
+                
+
+            ],
+            "orientation": "Vertical"
+        }).appendTo("#admin-menubar");
         new ejs.navigations.Sidebar({
             "dockSize": "50px",
             "enableDock": true,

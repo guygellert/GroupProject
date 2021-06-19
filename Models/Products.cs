@@ -17,7 +17,6 @@ namespace Caveret.Models
         public String productName { get; set; }
 
         [DataType(DataType.Currency)]
-        [MaxLength(6)]
         [Required(ErrorMessage = "product must have a price bigger than 0")]
         [Display(Name = "מחיר")]
         public double price { get; set; }
