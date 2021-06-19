@@ -13,6 +13,8 @@ namespace Caveret.Models
         [DataType(DataType.Date)]
         public DateTime whenToDeliever { get; set; }
 
+
+        //public AspNetUser MyProperty { get; set; }
         public List<Products> products { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿function create_type_pie_chart(data, wanted_element) {
-    var width = 400,
-        height = 400,
+    var width  = 300,
+        height = 300,
         radius = Math.min(width, height) / 2;
     var color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -38,13 +38,15 @@
             d.outerRadius = radius;
             return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
         })
+        .attr("font-size", 14)
+        .attr("font-weight", "bold")
         .attr("text-anchor", "middle")                          //center the text on it's origin 
-        .attr("fill", "white")
+        .attr("fill", "black")
         .text(function (d, i) { return data[i].categoryName + " : " + data[i].stocks; });        //get the label from our original data array
 };
 function create_maximum_profit_per_category(data, wanted_element) {
-    var width = 400,
-        height = 400,
+    var width = 300,
+        height = 300,
         radius = Math.min(width, height) / 2;
     var color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -82,7 +84,9 @@ function create_maximum_profit_per_category(data, wanted_element) {
             d.outerRadius = radius;
             return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
         })
+        .attr("font-size", 14)
+        .attr("font-weight", "bold")
         .attr("text-anchor", "middle")                          //center the text on it's origin 
-        .attr("fill", "white")
+        .attr("fill", "black")
         .text(function (d, i) { return data[i].categoryName + " : " + data[i].profit; });        //get the label from our original data array
 };

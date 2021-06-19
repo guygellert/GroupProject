@@ -46,10 +46,10 @@
         <h2 class="ma-2">כמות לפי קטגוריה</h2>
         <div id="stock-per-catagories"></div>
     </div>
-    @*<div class="text-center stat-card col-md-6" style="width: 600px;">
+    <div class="text-center stat-card col-md-6" style="width: 600px;">
         <h2 class="ma-2">רווח מקסימלי לקטגוריה</h2>
         <div id="maximum-profit-category"></div>
-    </div>*@
+    </div>
 </div>
 @*<div class="row" style="display: flex;">
 
@@ -68,6 +68,13 @@
         context: document.body
     }).done(function (data) {
         create_type_pie_chart(data, "#stock-per-catagories");
+    });
+
+    $.ajax({
+        url: "/Stocks/PossibleMaxCategory",
+        context: document.body
+    }).done(function (data) {
+        create_type_pie_chart(data, "#maximum-profit-category");
     });
 
 </script>
