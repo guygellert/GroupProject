@@ -4,14 +4,16 @@ using Caveret.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Caveret.Migrations
 {
     [DbContext(typeof(CaveretContext))]
-    partial class CaveretContextModelSnapshot : ModelSnapshot
+    [Migration("20210626065035_RebaseShops")]
+    partial class RebaseShops
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
