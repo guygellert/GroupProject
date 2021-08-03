@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,11 +9,18 @@ namespace Caveret.Models
 {
     public class Order
     {
+
+
         public int id { get; set; }
+
+
+        public int userId { get; set; }
+        public IdentityUser user { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime whenToDeliever { get; set; }
 
+        public int quentity { get; set; }
 
         //public AspNetUser MyProperty { get; set; }
         public List<Products> products { get; set; }

@@ -11,6 +11,7 @@ namespace Caveret.Models
         public int Id { get; set; }
         
         [Required(ErrorMessage = "Think about the customers! you must give a name")]
+        [Display(Name = "קטגוריה")]
         public String catagorieName { get; set; }
 
         public List<Products> products { get; set; }
