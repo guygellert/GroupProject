@@ -1,38 +1,193 @@
 ﻿@model Products
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.productName;
 }
 
-<div>
-     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.productName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.productName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.imgUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.imgUrl)
-        </dd>
-    </dl>
-</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<div class="products">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 single-top-left vcenter">
+                @*<ul class="slides">*@
+                   @* <li>*@
+                        <img class="slides-image" src="@Model.imgUrl" alt="" />
+                   @* </li>*@
+               @* </ul>*@
+            </div>
+
+            <div class="col-md-6 single-top-right vcenter">
+                <div class="row">
+                    <h3>@Model.productName</h3>
+
+                    <h3" class="actual-price">₪@Model.price</h3">
+                </div>
+                <div class="row">
+                    <p>@Model.description</p>
+                </div>
+                <div class="row">
+                    @*<input type="button" name="sbmt" onclick="speeach()" value="Submit">*@
+                </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+@*<div>*@
+    @*<div class="col-xs-12 col-sm-6 col-md-4 p-2">
+        <div class="product-grids product-item">
+            <div class="product-img">
+
+                <img class="image-product" src="@Model.imgUrl" alt="" />
+
+            </div>
+            <h4>@Model.productName</h4>
+            <h5>₪@Model.price</h5>
+        </div>
+    </div>*@
+    @*<dl class="row">*@
+        @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.productName)
+            </dt>*@
+        <!--<dd class="col-sm-10">
+            @Html.DisplayFor(model => model.productName)
+        </dd>-->
+        @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.price)
+            </dt>*@
+        <!--<dd class="col-sm-10">
+            @Html.DisplayFor(model => model.price)
+        </dd>-->
+
+        @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.imgUrl)
+            </dt>*@
+        <!--<dd class="col-sm-10">
+            <img src=@Html.DisplayFor(model => model.imgUrl) />
+        </dd>-->
+        @*<dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.description)
+            </dt>*@
+        <!--<dd class="col-sm-10">
+            @Html.DisplayFor(model => model.description)
+        </dd>
+    </dl>-->
+@*</div>*@
+
+
+<style>
+    .products {
+        background-size: cover;
+    }
+
+        .products .title h3 {
+            text-align: right;
+        }
+
+        .products .title p {
+            text-align: right;
+        }
+
+        .products .title p {
+            margin: 1em 0;
+            color: #EAEAEA;
+            text-align: right;
+        }
+
+        .products .panel-title {
+            text-align: right;
+        }
+
+    .vcenter {
+        padding-top: 5px;
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .single-top-left {
+        margin-right: 5%;
+        width: 40%;
+    }
+    .flex-viewport .slides li img {
+        width: 85%;
+        float: right;
+    }
+
+    .slides-image {
+        width: 100%;
+    }
+    .single-top-right h3 {
+        text-transform: capitalize;
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 0.6em;
+        text-align: right;
+    }
+
+    .single-top-right ul li {
+        display: inline-block;
+        margin-right: 3px;
+        color: #0280e1;
+    }
+
+    .single-top-right {
+        padding-right: 5em;
+    }
+    .actual-price {
+        margin: 0px 15px 0 0;
+        float: right;
+    }
+
+        .actual-price del {
+            font-size: 1.7em;
+            font-weight: 300;
+            color: #999;
+        }
+</style>
+<script type="text/javascript">
+    function speeach() {
+        //const data = null;
+
+        //const xhr = new XMLHttpRequest();
+        //xhr.withCredentials = false;
+
+        //xhr.addEventListener("readystatechange", function () {
+        //    if (this.readyState === this.DONE) {
+        //        //console.log(this.responseText);
+        //        //console.log(this.responseXML);
+
+        //        console.log(this.responseURL);
+        //        //console.log(this.response);
+        //        console.log("---------------------------");
+        //        return this.responseURL;
+        //        //var audio = new Audio(this.responseURL);
+        //        //audio.play();
+        //    }
+        //});
+
+        //xhr.open("GET", "https://voicerss-text-to-speech.p.rapidapi.com/?key=dcd702a3ea80430e843eb1b1bcd46f73&hl=en-us&src=Hello%2C%20world!&f=8khz_8bit_mono&c=mp3&r=0");
+        //xhr.setRequestHeader("x-rapidapi-key", "9cf7294f68msh8690be7ab91562cp15dafajsn651d432b79a6");
+        //xhr.setRequestHeader("x-rapidapi-host", "voicerss-text-to-speech.p.rapidapi.com");
+
+        //xhr.send(data);
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/Products/textToSpeechPost",
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //}).done(function (data)
+        //{
+            $.ajax(
+                {
+                    url: "/Products/textToSpeeach",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                }
+            )
+        //}
+        //);
+    }
+</script>

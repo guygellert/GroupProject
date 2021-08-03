@@ -1,5 +1,7 @@
 ﻿<html>
+
 <head>
+
     <meta name="viewport" content="width=device-width">
     <title>SidebarMenu</title>
     <link href="/aspnetmvc/Content/Site.css" rel="stylesheet">
@@ -54,7 +56,7 @@
                             <p class="main-menu-header">CATEGORIES</p>
                             <div>
                                 <!-- menu element declaration-->
-                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul onclick="pop()" id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret" ></ul></div>
 
                             </div>
 
@@ -163,10 +165,10 @@
             background-color: #0a7ee1 !important;
         }
 
-            #header .search-icon:focus {
-                outline: none;
-                cursor: default;
-            }
+        #header .search-icon:focus {
+            outline: none;
+            cursor: default;
+        }
 
         /* end of text input styles */
         /* end of header-section styles */
@@ -267,16 +269,16 @@
             color: #fff !important;
         }
 
-            #sidebar-menu,
-            #sidebar-menu ul,
-            .dock-menu .e-menu-wrapper,
-            .dock-menu.e-menu-wrapper,
-            .dock-menu.e-menu-wrapper ul > *,
-            .dock-menu .e-menu-wrapper ul > * {
-                background-image: linear-gradient(90deg, #087ee1 10%, #05e8ba 90%) !important;
-                color: #fff !important;
-                overflow: hidden;
-            }
+        #sidebar-menu,
+        #sidebar-menu ul,
+        .dock-menu .e-menu-wrapper,
+        .dock-menu.e-menu-wrapper,
+        .dock-menu.e-menu-wrapper ul > *,
+        .dock-menu .e-menu-wrapper ul > * {
+            background-image: linear-gradient(90deg, #087ee1 10%, #05e8ba 90%) !important;
+            color: #fff !important;
+            overflow: hidden;
+        }
 
 
         #header ul {
@@ -294,20 +296,20 @@
             color: white;
         }
 
-            /*end of main-menu-header  styles */
+        /*end of main-menu-header  styles */
 
-            /*button styles */
-            #sidebar-menu .action-btn {
-                margin-left: 16px;
-                width: 165px;
-                height: 30px;
-                font-size: 13px;
-                border-radius: 5px;
-            }
+        /*button styles */
+        #sidebar-menu .action-btn {
+            margin-left: 16px;
+            width: 165px;
+            height: 30px;
+            font-size: 13px;
+            border-radius: 5px;
+        }
 
-            #sidebar-menu .action-btn {
-                background-color: #1784c7;
-            }
+        #sidebar-menu .action-btn {
+            background-color: #1784c7;
+        }
         /* custom code start */
         /*end of button styles */
         .sb-content-tab #wrapper {
@@ -344,52 +346,52 @@
 
         /*icon styles */
 
-/*
-        #sidebar-menu .icon-sweets:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+        /*
+                #sidebar-menu .icon-sweets:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-salty:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-salty:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-cereal:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-cereal:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-drinks:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-drinks:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-electric:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-electric:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-for_home:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-for_home:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-textile:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-textile:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-leisure:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
+                #sidebar-menu .icon-leisure:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
 
-        #sidebar-menu .icon-phone:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-*/
+                #sidebar-menu .icon-phone:before {
+                    content: '\f35a';
+                    font-family: "Font Awesome 5 Free";
+                }
+        */
 
         #header .icon-menu:before {
             content: '\f35a';
@@ -409,7 +411,15 @@
     </style>
 
 
-    <script>
+    <script type="text/javascript">
+
+        function pop(data) {
+            window.location.replace( "http://" + window.location.host + "/Home/NavToProducts");
+            //$.ajax({
+            //    url: ,
+            //});
+        }
+
         new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
@@ -425,115 +435,144 @@
                 }
             ]
         }).appendTo("#horizontal-menubar");
-
-        new ejs.navigations.Menu({
-            "cssClass": "dock-menu",
-            "hoverDelay": 0.0,
-            "items": [
+        $.ajax({
+            url: "/Home/getCatagoryList",
+        }).done(function (data) {
+            console.log(data);
+            @*@{ 
+                var NavigationObj = new Navigation();
+                var items = new ArraySegment<Navigation>();
+                var catList = new Ar
+                for (var i = 0; i< data.length;i++)
                 {
-                    "text": "All Items",
-                    "iconCss": "icon-sweets icon",
-                    "url": "Products",
-                    "color": "white",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Sweets",
-                    "iconCss": "icon-sweets icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Salty",
-                    "iconCss": "icon-salty icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Cereal",
-                    "iconCss": "icon-cereal icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Drinks",
-                    "iconCss": "icon-drinks icon",
-                    "items": [
-                        //{
-                        //    "text": "Category1 "
-                        //},
-                        //{
-                        //    "text": "Category2"
-                        //},
-                        //{
-                        //    "text": "Category3"
-                        //}
-                    ]
-                },
-                {
-                    "text": "Electric",
-                    "iconCss": "icon-electric icon",
-                    "items": [
-               
-                    ]
-                },
-                {
-                    "text": "For Home",
-                    "iconCss": "icon-for_home icon",
-                    "items": [
-              
-                    ]
-                },
-                {
-                    "text": "Textile",
-                    "iconCss": "icon-textile icon",
-                    "items": [
-                  
-                    ]
-                },
-                {
-                    "text": "Leisure",
-                    "iconCss": "icon-leisure",
-                    "items": [
-                     
-                    ]
-                },
-                {
-                    "text": "Phone",
-                    "iconCss": "icon-phone",
-                    "items": [
-                        {
-                            "text": "Facebook"
-                        },
-                        {
-                            "text": "Video"
-                        }
-                    ]
+                    NavigationObj.text = catagory.catagorieName;
+                    items.Append(NavigationObj);
                 }
-            ],
+
+            }*@
+                    ////var CatagoryObj = { "FirstName" : "guy" ,  };
+                    //foreach (var catagory in Model)
+                    //{
+
+                    //    NavigationObj.text = catagory.catagorieName;
+                    //    NavigationObj.url = "Products";
+                    //    items.Append(NavigationObj);
+                    //    //CatagoryObj
+                    //}
+
+                    new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+                        "hoverDelay": 0.0,
+                        "items": data,
+            //"items": [
+            //    {
+            //                  "text": "All Items",
+            //        "iconCss": "icon-sweets icon",
+            //        "url": "Products",
+            //        "color": "white",
+            //        "items": [
+            //        ]
+            //    },
+            //    {
+            //                  "text": "Sweets",
+            //        "iconCss": "icon-sweets icon",
+            //        "items": [
+            //        ]
+            //},
+            //    {
+            //    "text": "Salty",
+            //        "iconCss": "icon-salty icon",
+            //        "items": [
+            //        ]
+            //    },
+            //    {
+            //    "text": "Cereal",
+            //        "iconCss": "icon-cereal icon",
+            //        "items": [
+            //        ]
+            //    },
+            //    {
+            //    "text": "Drinks",
+            //        "url": "Products/Search",
+            //        "queryId":1,
+            //        "iconCss": "icon-drinks icon",
+            //        "items": [
+            //            //{
+            //            //    "text": "Category1 "
+            //            //},
+            //            //{
+            //            //    "text": "Category2"
+            //            //},
+            //            //{
+            //            //    "text": "Category3"
+            //            //}
+            //        ]
+            //    },
+            //    {
+            //    "text": "Electric",
+            //        "iconCss": "icon-electric icon",
+            //        "items": [
+
+            //        ]
+            //    },
+            //    {
+            //    "text": "For Home",
+            //        "iconCss": "icon-for_home icon",
+            //        "items": [
+
+            //        ]
+            //    },
+            //    {
+            //    "text": "Textile",
+            //        "iconCss": "icon-textile icon",
+            //        "items": [
+
+            //        ]
+            //    },
+            //    {
+            //    "text": "Leisure",
+            //        "iconCss": "icon-leisure",
+            //        "items": [
+
+            //        ]
+            //    },
+            //    {
+            //    "text": "Phone",
+            //        "iconCss": "icon-phone",
+            //        "items": [
+            //            {
+            //        "text": "Facebook"
+            //            },
+            //            {
+            //        "text": "Video"
+            //            }
+            //        ]
+            //    }
+            //],
             "orientation": "Vertical"
         }).appendTo("#main-menubar");
 
-        new ejs.navigations.Menu({
+        });
+            new ejs.navigations.Menu({
             "cssClass": "dock-menu",
-            "hoverDelay": 0.0,
-            "items": [
+  "hoverDelay": 0.0,
+  "items": [
                 {
                     "text": "Branches",
-                    "iconCss": "icon-sweets icon",
-                    "items": [
-                    ]
-                },
+          "iconCss": "icon-sweets icon",
+          "items": [
+
+          ]
+                  },
                 {
-                    "text": "About Us",
+                "text": "About Us",
                     "iconCss": "icon-salty icon",
                     "items": [
                         {
-                            "text": "Facebook"
+                    "text": "Facebook"
                         },
                         {
-                            "text": "Video"
+                    "text": "Video"
                         }
                     ]
                 }
@@ -542,32 +581,32 @@
             "orientation": "Vertical"
         }).appendTo("#action-menubar");
 
-        new ejs.navigations.Menu({
+            new ejs.navigations.Menu({
             "cssClass": "dock-menu",
-            "hoverDelay": 0.0,
-            "items": [
+                "hoverDelay": 0.0,
+                "items": [
                 {
                     "text": "Add Item",
-                    "iconCss": "icon-sweets icon",
-                    "url": "Products/Create",
-                    "items": [
+                        "iconCss": "icon-sweets icon",
+                        "url": "Products/Create",
+                        "items": [
                         {
                             "text": "Edit First",
-                            "iconCss": "icon-sweets icon",
-                            "url": "Products/Edit/1",                        },
+                                "iconCss": "icon-sweets icon",
+                                "url": "Products/Edit/1",                        },
                     ]
                 },
-                
+
 
             ],
             "orientation": "Vertical"
         }).appendTo("#admin-menubar");
-        new ejs.navigations.Sidebar({
+            new ejs.navigations.Sidebar({
             "dockSize": "50px",
-            "enableDock": true,
-            "target": ".main-content",
-            "width": "220px",
-            "zIndex": 1000.0
+                "enableDock": true,
+                "target": ".main-content",
+                "width": "220px",
+                "zIndex": 1000.0
         }).appendTo("#sidebar-menu");
     </script>
 

@@ -158,16 +158,48 @@ namespace Caveret.Controllers
         }
         public JsonResult StocksByCategories()
         {
+            //var res = _context.Products
+            //           .Join(_context.Stock,
+            //                prod => prod.Id,
+            //                sto => sto.productId,
+            //                (prod,sto) => new
+            //                {
+            //                    ProductId = prod.Id,
+            //                    StockId = sto.id
+            //                })
+            //           .Join(_context.Catagories,
+            //                 prod => prod.ProductId,
+            //                 cat => cat.)
+            //var res = _context.Stock.Include(sto => sto.product)
+            //          .Join(_context.Products,
+            //                 sto => sto.productId,
+            //                 prod => prod.Id,
+            //                 (sto, prod) => new
+            //                 {
+            //                     StockId = sto.id,
+            //                     ProductId = prod.Id
+            //                 }
+            //                 )
+            //          .Join(_context.Catagories,
+            //                prod => prod.ProductId
+            //                cat => cat.Id
+            //                (prod,cat) => new 
+            //                {
+            //                    ProductId = cat.
+            //                }
+            //                )
+            //          .Select(sto => sto);
+
             var result = _context.Catagories.Include(c => c.products)
-                         .Select(c => 
+                         .Select(c =>
             new
             {
                 CategoryName = c.catagorieName,
-                Stocks = (from prod in _context.Products 
-                          where prod.Catagories.Select( cat => cat.Id).Contains(c.Id)
+                Stocks = (from prod in _context.Products
+                          where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
                           join sto in _context.Stock on prod.Id equals sto.productId
                           select sto.quantity).Sum()
-             });
+            });
 
             return Json(result);
         }
@@ -175,14 +207,14 @@ namespace Caveret.Controllers
         {
             var result = _context.Catagories.Include(c => c.products)
              .Select(c =>
-new
-{
-    CategoryName = c.catagorieName,
-    Stocks = (from prod in _context.Products
-              where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
-              join sto in _context.Stock on prod.Id equals sto.productId
-              select prod.price * sto.quantity).Sum()
-});
+                new
+                {
+                CategoryName = c.catagorieName,
+                Stocks = (from prod in _context.Products
+                          where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
+                          join sto in _context.Stock on prod.Id equals sto.productId
+                          select prod.price * sto.quantity).Sum()
+                });
 
             return Json(result);
             //var result;
@@ -194,7 +226,6 @@ new
             //    Profit = p.ToList().Sum( x=> x.product.price)
             //});
 
-            return Json("s");
         }
     }
 }

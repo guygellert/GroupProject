@@ -20,10 +20,12 @@ namespace Caveret.Models
         [DataType(DataType.Currency)]
         [Required(ErrorMessage = "product must have a price bigger than 0")]
         [Display(Name = "מחיר")]
+        [Range(1,999999)]
         public double price { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "תיאור")]
+        [MaxLength(50)]
         public String description { get; set; }
 
         [DataType(DataType.ImageUrl)]
