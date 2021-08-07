@@ -4,39 +4,95 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Shop details</h1>
 
-<div>
+<div class="container-fluid" style="width: 100%;">
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="cursor: auto;">
+            <center>
+                <div id="myMap" style="width: 450px;height: 450px;" />
+            </center>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="cursor: auto;">
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" text-align: center;">
+                    <h1>@Html.DisplayFor(model => model.Description)</h1>
+                    <h2>
+                        @Html.DisplayFor(model => model.Address)
+                    </h2>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="text-align: center;">
+                    <h1>שעות פעילות</h1>
+                    <h1>א-ה:  <br />@Html.DisplayFor(model => model.OpeningTime) - @Html.DisplayFor(model => model.ClosingTime)</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <h4>Shops</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OpeningTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OpeningTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ClosingTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClosingTime)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+
+
+    <script type="text/javascript">
+    var map;
+    var searchManager;
+
+    function GetMap() {
+        map = new Microsoft.Maps.Map("#myMap");
+        addRoomToMap('@Model.Description', '@Model.Address');
+    }
+
+    function addRoomToMap(name, address) {
+        findLocationByAddress(address, function (location) {
+            var shopLocation = location;
+            var shopPoint = new Microsoft.Maps.Pushpin(shopLocation);
+            var infobox = new Microsoft.Maps.Infobox(shopLocation, {
+                title: name,
+                description: address,
+                visible: false
+            });
+            infobox.setMap(map);
+            infobox.setOptions({ visible: true });
+            Microsoft.Maps.Events.addHandler(shopPoint, 'click', function () {
+                infobox.setOptions({ visible: true });
+            });
+            map.entities.push(shopPoint);
+            map.setView({
+                center: location,
+                zoom: 15
+            });
+
+        });
+    }
+
+    function findLocationByAddress(address, foo) {
+        // If search manager is not defined, load the search module
+        if (!searchManager) {
+            // Create an instance of the search manager and re-enter function
+            Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
+                searchManager = new Microsoft.Maps.Search.SearchManager(map);
+                findLocationByAddress(address, foo);
+            });
+        } else {
+            var searchRequest = {
+                where: address,
+                callback: function (r) {
+                    foo(r.results[0].location);
+                },
+                errorCallback: function (e) {
+                    // If there is an error
+                    console.log("No results found for this address: " + address);
+                }
+            };
+
+            // Make the geocode request
+            searchManager.geocode(searchRequest);
+        }
+    }
+    </script>
+    <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AmTbZrbvXwVy0XO22GneszL2g9TZqn9gsLSs8ejbQe-EIb5_QvppPlAyyD_59HII" async defer></script>
