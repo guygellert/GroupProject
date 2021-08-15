@@ -136,8 +136,8 @@ namespace Caveret.Controllers
             
             ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
 
-            var prod = from p in _context.Products
-                                  join s in _context.Stock on p.Id equals s.productId
+            var prod = from p in _context.Products.Include(p => p.imgUrl)
+                       join s in _context.Stock on p.Id equals s.productId
                                   where s.quantity >= 0
                                   select p;
             return View(await prod.ToListAsync());
@@ -262,7 +262,7 @@ namespace Caveret.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var products = await _context.Products.Include(p => p.imgUrl)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
