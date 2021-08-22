@@ -24,6 +24,17 @@ namespace Caveret.Controllers
             return View(await _context.Shops.ToListAsync());
         }
 
+        public async Task<IActionResult> Search(string queryName, string queryAddress)
+        {
+            var shops = from shop in _context.Shops 
+                        select shop;
+
+            shops = shops.Where(shop => ((shop.Description.Contains(queryName) || queryName == null) &&
+                                        (shop.Address.Contains(queryAddress) || queryAddress == null))).Select(shop => shop);
+
+            return View("Index", shops);
+        }
+
         // GET: Shops/Details/5
         public async Task<IActionResult> Details(int? id)
         {

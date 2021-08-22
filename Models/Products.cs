@@ -28,9 +28,8 @@ namespace Caveret.Models
         [MaxLength(50)]
         public String description { get; set; }
 
-        [DataType(DataType.ImageUrl)]
         [Display(Name = "כתובת תמונה")]
-        public String imgUrl { get; set; }
+        public ImageLink imgUrl { get; set; }
 
         //[Required(ErrorMessage = "Every Product Have A Category Choose One")]
         [Display(Name = "קטגוריה")]
