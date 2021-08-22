@@ -46,7 +46,7 @@ namespace Caveret.Controllers
             new
             {
                 text = c.catagorieName,
-                url = "Home/NavToProducts/" + c.Id,
+                url = "/Home/NavToProducts/" + c.Id,
                 iconCss = "icon-sweets icon",
                 color =  "white"
             });

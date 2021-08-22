@@ -174,7 +174,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,productName,price,description,imgUrl")] Products products , int [] Catagories)
+        public async Task<IActionResult> Create([Bind("Id,productName,price,description,imgUrlId")] Products products , int [] Catagories)
         {
             if (ModelState.IsValid)
             {
@@ -221,7 +221,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,productName,price,description,imgUrl")] Products products, int[] Catagories)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,productName,price,description,imgUrlId")] Products products, int[] Catagories)
         {
             if (id != products.Id)
             {

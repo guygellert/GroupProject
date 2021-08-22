@@ -1,16 +1,83 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<html>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<head>
 
 
-    <blockquote class="twitter-tweet">
-        <p lang="en" dir="ltr">Now Today Double Trouble Product</p>&mdash; 
-    CaveretOnProj 
-        <a href="https://twitter.com/CaveretOnPro/status/1422586425518829585?ref_src=twsrc%5Etfw">August 3, 2021</a>
-    </blockquote>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
+</head>
+<body class="e-lib e-touch">
+
+
+
+    <video style="width: 100%; height: 50%;" controls>
+        <source src="~/video/order.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="main">
+        <div class="containerText">
+            <p>
+                Cavert - the convenience store chain for the Soldier AR (formerly the Shekem / Shekel), operates about 300 points of sale in IDF bases and units throughout the country.
+            </p>
+            <p>
+                The chain's branches are scattered from the Lebanon sector to Eilat, which include self-service family stores located in the large bases and behind-the-counter stores
+                The chain markets leading and quality products for IDF soldiers in a variety of categories: food, drink, electronics, sports, care and perfumes, textiles and more ....
+            </p>
+
+
+        </div>
+        <div style="margin-left: 150px; width: 700px; margin-top: 85px">
+        <blockquote class="twitter-tweet" >
+            <p lang="en" dir="ltr">Now Today Double Trouble Product</p>&mdash;
+            CaveretOnProj
+            <a href="https://twitter.com/CaveretOnPro/status/1422586425518829585?ref_src=twsrc%5Etfw">August 3, 2021</a>
+        </blockquote>
+            </div>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+
+
+
+
+    <script>
+
+    </script>
+    <style>
+
+        .main {
+            display: flex
+        }
+
+        h1 {
+            font-weight: 600;
+        }
+
+
+        .containerText {
+            width: 60%;
+            margin: 1rem auto;
+            padding: 2rem;
+            text-align: justify;
+            transition: all 0.3s;
+        }
+
+            .containerText p {
+                line-height: 1.5;
+                letter-spacing: 0.3px;
+                word-spacing: 2px;
+            }
+
+                .containerText p:first-child::first-letter {
+                    color: #fdc002;
+                    font-weight: bold;
+                    font-size: 70px;
+                    float: left;
+                    line-height: 60px;
+                    padding-right: 8px;
+                    margin-top: -3px;
+                }
+    </style>
+
+</body>
+</html>
