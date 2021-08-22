@@ -23,7 +23,7 @@ html {
   margin-left: auto;
 }
 
-@media (min-width: 576px) {
+/*@media (min-width: 576px) {
   .container {
     max-width: 540px;
   }
@@ -45,7 +45,7 @@ html {
   .container {
     max-width: 1140px;
   }
-}
+}*/
 
 .container-fluid {
   width: 100%;
