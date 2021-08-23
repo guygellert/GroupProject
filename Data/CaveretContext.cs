@@ -20,7 +20,5 @@ namespace Caveret.Data
         public DbSet<Products> Products { get; set; }
 
         public DbSet<Caveret.Models.Stock> Stock { get; set; }
-
-        public DbSet<Products> AspNetRoles { get; set; }
     }
 }

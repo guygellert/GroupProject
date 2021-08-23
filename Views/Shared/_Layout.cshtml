@@ -1,5 +1,7 @@
 ﻿<html>
+
 <head>
+
     <meta name="viewport" content="width=device-width">
     <title>SidebarMenu</title>
     <link href="/aspnetmvc/Content/Site.css" rel="stylesheet">
@@ -33,7 +35,6 @@
             <div class="header-section dock-menu" id="header">
                 <ul class="header-list">
                     <li id="hamburger" class="icon-menu icon list" (click)="toggle()"></li>
-                    <input type="text" placeholder="Search..." class="search-icon list">
                     <li class="right-header list">
                         <div class="horizontal-menu">
                             <!-- menu element declaration-->
@@ -54,7 +55,7 @@
                             <p class="main-menu-header">CATEGORIES</p>
                             <div>
                                 <!-- menu element declaration-->
-                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul onclick="pop()" id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret" ></ul></div>
 
                             </div>
 
@@ -68,7 +69,17 @@
                                 <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="action-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
 
                             </div>
-                            <button class="e-btn action-btn" id="action-button">Checkout</button>
+                            @*<button class="e-btn action-btn" id="action-button">Checkout</button>*@
+                        </div>
+
+                        <div class="admin">
+
+                            <p class="main-menu-header">ADMIN</p>
+                            <div>
+                                <!-- menu element declaration-->
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="admin-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+
+                            </div>
                         </div>
                         <!-- end of normal state element declaration -->
                     </div>
@@ -76,7 +87,7 @@
 
                     <img class="esh-catalog-title" src="~/images/third.webp" style="height: 260px; width: 100% " />
 
-                    <div class="container">
+                    <div class="container" style="width: auto;">
                         <main role="main" class="pb-3">
                             @RenderBody()
                         </main>
@@ -153,10 +164,10 @@
             background-color: #0a7ee1 !important;
         }
 
-            #header .search-icon:focus {
-                outline: none;
-                cursor: default;
-            }
+        #header .search-icon:focus {
+            outline: none;
+            cursor: default;
+        }
 
         /* end of text input styles */
         /* end of header-section styles */
@@ -253,16 +264,20 @@
             overflow: hidden;
         }
 
-            #sidebar-menu,
-            #sidebar-menu ul,
-            .dock-menu .e-menu-wrapper,
-            .dock-menu.e-menu-wrapper,
-            .dock-menu.e-menu-wrapper ul > *,
-            .dock-menu .e-menu-wrapper ul > * {
-                background-image: linear-gradient(90deg, #087ee1 10%, #05e8ba 90%) !important;
-                color: #fff !important;
-                overflow: hidden;
-            }
+        .e-menu-wrapper ul .e-menu-item .e-menu-url, .e-menu-container ul .e-menu-item .e-menu-url {
+            color: #fff !important;
+        }
+
+        #sidebar-menu,
+        #sidebar-menu ul,
+        .dock-menu .e-menu-wrapper,
+        .dock-menu.e-menu-wrapper,
+        .dock-menu.e-menu-wrapper ul > *,
+        .dock-menu .e-menu-wrapper ul > * {
+            background-image: linear-gradient(90deg, #087ee1 10%, #087ee1 90%) !important;
+            color: #fff !important;
+            overflow: hidden;
+        }
 
 
         #header ul {
@@ -280,20 +295,20 @@
             color: white;
         }
 
-            /*end of main-menu-header  styles */
+        /*end of main-menu-header  styles */
 
-            /*button styles */
-            #sidebar-menu .action-btn {
-                margin-left: 16px;
-                width: 165px;
-                height: 30px;
-                font-size: 13px;
-                border-radius: 5px;
-            }
+        /*button styles */
+        #sidebar-menu .action-btn {
+            margin-left: 16px;
+            width: 165px;
+            height: 30px;
+            font-size: 13px;
+            border-radius: 5px;
+        }
 
-            #sidebar-menu .action-btn {
-                background-color: #1784c7;
-            }
+        #sidebar-menu .action-btn {
+            background-color: #1784c7;
+        }
         /* custom code start */
         /*end of button styles */
         .sb-content-tab #wrapper {
@@ -330,52 +345,7 @@
 
         /*icon styles */
 
-/*
-        #sidebar-menu .icon-sweets:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-salty:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-cereal:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-drinks:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-electric:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-for_home:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-textile:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-leisure:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-
-        #sidebar-menu .icon-phone:before {
-            content: '\f35a';
-            font-family: "Font Awesome 5 Free";
-        }
-*/
+      
 
         #header .icon-menu:before {
             content: '\f35a';
@@ -395,7 +365,13 @@
     </style>
 
 
-    <script>
+    <script type="text/javascript">
+
+        function pop(data) {
+            window.location.replace("http://" + window.location.host + "/Home/NavToProducts");
+
+        }
+
         new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
@@ -404,103 +380,32 @@
                     "text": "Account",
                     "items": [
                         {
-                            "text": "Profile"
-                        },
-                        {
-                            "text": "Sign out"
+                            "text": "Sign In",
+                            "url": "/account/login",
                         }
+                    ]
+                },
+                {
+                    "text": "Home",
+                    "url": "/",
+                    "items": [
                     ]
                 }
             ]
         }).appendTo("#horizontal-menubar");
+        $.ajax({
+            url: "/Home/getCatagoryList",
+        }).done(function (data) {
 
-        new ejs.navigations.Menu({
-            "cssClass": "dock-menu",
-            "hoverDelay": 0.0,
-            "items": [
-                {
-                    "text": "All Items",
-                    "iconCss": "icon-sweets icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Sweets",
-                    "iconCss": "icon-sweets icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Salty",
-                    "iconCss": "icon-salty icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Cereal",
-                    "iconCss": "icon-cereal icon",
-                    "items": [
-                    ]
-                },
-                {
-                    "text": "Drinks",
-                    "iconCss": "icon-drinks icon",
-                    "items": [
-                        //{
-                        //    "text": "Category1 "
-                        //},
-                        //{
-                        //    "text": "Category2"
-                        //},
-                        //{
-                        //    "text": "Category3"
-                        //}
-                    ]
-                },
-                {
-                    "text": "Electric",
-                    "iconCss": "icon-electric icon",
-                    "items": [
-               
-                    ]
-                },
-                {
-                    "text": "For Home",
-                    "iconCss": "icon-for_home icon",
-                    "items": [
-              
-                    ]
-                },
-                {
-                    "text": "Textile",
-                    "iconCss": "icon-textile icon",
-                    "items": [
-                  
-                    ]
-                },
-                {
-                    "text": "Leisure",
-                    "iconCss": "icon-leisure",
-                    "items": [
-                     
-                    ]
-                },
-                {
-                    "text": "Phone",
-                    "iconCss": "icon-phone",
-                    "items": [
-                        {
-                            "text": "Facebook"
-                        },
-                        {
-                            "text": "Mobile"
-                        }
-                    ]
-                }
-            ],
-            "orientation": "Vertical"
-        }).appendTo("#main-menubar");
 
+            new ejs.navigations.Menu({
+                "cssClass": "dock-menu",
+                "hoverDelay": 0.0,
+                "items": data,
+                "orientation": "Vertical"
+            }).appendTo("#main-menubar");
+
+        });
         new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
@@ -509,25 +414,35 @@
                     "text": "Branches",
                     "iconCss": "icon-sweets icon",
                     "items": [
+
                     ]
                 },
-                {
-                    "text": "About Us",
-                    "iconCss": "icon-salty icon",
-                    "items": [
-                        {
-                            "text": "Facebook"
-                        },
-                        {
-                            "text": "Mobile"
-                        }
-                    ]
-                }
 
             ],
             "orientation": "Vertical"
         }).appendTo("#action-menubar");
 
+        new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+            "hoverDelay": 0.0,
+            "items": [
+                {
+                    "text": "Add Item",
+                    "iconCss": "icon-sweets icon",
+                    "url": "/Products/Create",
+                    "items": []
+                },
+                {
+                    "text": "Edit Item",
+                    "iconCss": "icon-sweets icon",
+                    "url": "/Products/Edit/1",
+                    "items": []
+                },
+
+
+            ],
+            "orientation": "Vertical"
+        }).appendTo("#admin-menubar");
         new ejs.navigations.Sidebar({
             "dockSize": "50px",
             "enableDock": true,

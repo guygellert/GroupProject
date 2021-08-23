@@ -1,5 +1,6 @@
 ﻿using Caveret.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Caveret.Models
 {
@@ -17,23 +18,25 @@ namespace Caveret.Models
         public String productName { get; set; }
 
         [DataType(DataType.Currency)]
-        [MaxLength(6)]
         [Required(ErrorMessage = "product must have a price bigger than 0")]
         [Display(Name = "מחיר")]
+        [Range(1,999999)]
         public double price { get; set; }
 
         [DataType(DataType.MultilineText)]
         [Display(Name = "תיאור")]
+        [MaxLength(50)]
         public String description { get; set; }
 
-        [DataType(DataType.ImageUrl)]
         [Display(Name = "כתובת תמונה")]
-        public String imgUrl { get; set; }
+        public ImageLink imgUrl { get; set; }
 
-        [Required(ErrorMessage = "Every Product Have A Category Choose One")]
+        //[Required(ErrorMessage = "Every Product Have A Category Choose One")]
         [Display(Name = "קטגוריה")]
-        public int catagoryId { get; set; }
-        public Catagories catagory { get; set; }
+        //public int catagoryId { get; set; }
+        public List<Catagories> Catagories { get; set; }
+
+        public List<Order> orders { get; set; }
 
     }
 }

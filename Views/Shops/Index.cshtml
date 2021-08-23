@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Shops>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form asp-action="Search" class="">
+    <div class="card text-center">
+        <div class="card-header">חיפוש</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input name="queryAddress" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label name="name" class="control-label labelStyle">כתובת :</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input name="queryName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label name="name" class="control-label labelStyle">שם חנות :</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <input type="submit" value="חיפוש" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClosingTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpeningTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClosingTime)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+.labelStyle{
+            font-size: medium;
+            direction: rtl;
+        }
+</style>

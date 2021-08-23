@@ -158,27 +158,74 @@ namespace Caveret.Controllers
         }
         public JsonResult StocksByCategories()
         {
-            var result = _context.Stock.Include(p => p.product).Include(p => p.product.catagory).
-                GroupBy(p => p.product.catagory.catagorieName).Select(p =>
+            //var res = _context.Products
+            //           .Join(_context.Stock,
+            //                prod => prod.Id,
+            //                sto => sto.productId,
+            //                (prod,sto) => new
+            //                {
+            //                    ProductId = prod.Id,
+            //                    StockId = sto.id
+            //                })
+            //           .Join(_context.Catagories,
+            //                 prod => prod.ProductId,
+            //                 cat => cat.)
+            //var res = _context.Stock.Include(sto => sto.product)
+            //          .Join(_context.Products,
+            //                 sto => sto.productId,
+            //                 prod => prod.Id,
+            //                 (sto, prod) => new
+            //                 {
+            //                     StockId = sto.id,
+            //                     ProductId = prod.Id
+            //                 }
+            //                 )
+            //          .Join(_context.Catagories,
+            //                prod => prod.ProductId
+            //                cat => cat.Id
+            //                (prod,cat) => new 
+            //                {
+            //                    ProductId = cat.
+            //                }
+            //                )
+            //          .Select(sto => sto);
+
+            var result = _context.Catagories.Include(c => c.products)
+                         .Select(c =>
             new
             {
-                CategoryName = p.Key,
-                Stocks = p.ToList().Sum(x => x.quantity)
+                CategoryName = c.catagorieName,
+                Stocks = (from prod in _context.Products
+                          where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
+                          join sto in _context.Stock on prod.Id equals sto.productId
+                          select sto.quantity).Sum()
             });
 
             return Json(result);
         }
         public JsonResult PossibleMaxCategory()
         {
-            var result = _context.Stock.Include(p => p.product).Include(p => p.product.catagory).
-                GroupBy(p => p.product.catagory.catagorieName).Select(p =>
-            new
-            {
-                CategoryName = p.Key,
-                Profit = p.ToList().Sum( x=> x.product.price)
-            });
+            var result = _context.Catagories.Include(c => c.products)
+             .Select(c =>
+                new
+                {
+                CategoryName = c.catagorieName,
+                Stocks = (from prod in _context.Products
+                          where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
+                          join sto in _context.Stock on prod.Id equals sto.productId
+                          select prod.price * sto.quantity).Sum()
+                });
 
             return Json(result);
+            //var result;
+            //var result = _context.Stock.Include(p => p.product).Include(p => p.product.catagory).
+            //    GroupBy(p => p.product.catagory.catagorieName).Select(p =>
+            //new
+            //{
+            //    CategoryName = p.Key,
+            //    Profit = p.ToList().Sum( x=> x.product.price)
+            //});
+
         }
     }
 }

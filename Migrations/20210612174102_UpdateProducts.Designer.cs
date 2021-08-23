@@ -4,35 +4,22 @@ using Caveret.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Caveret.Migrations
 {
     [DbContext(typeof(CaveretContext))]
-    partial class CaveretContextModelSnapshot : ModelSnapshot
+    [Migration("20210612174102_UpdateProducts")]
+    partial class UpdateProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CatagoriesProducts", b =>
-                {
-                    b.Property<int>("CatagoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("productsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CatagoriesId", "productsId");
-
-                    b.HasIndex("productsId");
-
-                    b.ToTable("CatagoriesProducts");
-                });
 
             modelBuilder.Entity("Caveret.Models.Catagories", b =>
                 {
@@ -41,55 +28,18 @@ namespace Caveret.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ProductsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("catagorieName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductsId");
+
                     b.ToTable("Catagories");
-                });
-
-            modelBuilder.Entity("Caveret.Models.ImageLink", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ImageLink");
-                });
-
-            modelBuilder.Entity("Caveret.Models.Order", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("quentity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("userId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("whenToDeliever")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("userId1");
-
-                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Caveret.Models.Products", b =>
@@ -100,13 +50,13 @@ namespace Caveret.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("imgUrlId")
-                        .HasColumnType("int");
+                    b.Property<string>("imgUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("price")
+                        .HasMaxLength(6)
                         .HasColumnType("float");
 
                     b.Property<string>("productName")
@@ -115,8 +65,6 @@ namespace Caveret.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("imgUrlId");
 
                     b.ToTable("Products");
                 });
@@ -337,78 +285,11 @@ namespace Caveret.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("OrderProducts", b =>
+            modelBuilder.Entity("Caveret.Models.Catagories", b =>
                 {
-                    b.Property<int>("ordersid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("productsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ordersid", "productsId");
-
-                    b.HasIndex("productsId");
-
-                    b.ToTable("OrderProducts");
-                });
-
-            modelBuilder.Entity("Shops", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ClosingTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("OpeningTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Shops");
-                });
-
-            modelBuilder.Entity("CatagoriesProducts", b =>
-                {
-                    b.HasOne("Caveret.Models.Catagories", null)
-                        .WithMany()
-                        .HasForeignKey("CatagoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Caveret.Models.Products", null)
-                        .WithMany()
-                        .HasForeignKey("productsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Caveret.Models.Order", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "user")
-                        .WithMany()
-                        .HasForeignKey("userId1");
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("Caveret.Models.Products", b =>
-                {
-                    b.HasOne("Caveret.Models.ImageLink", "imgUrl")
-                        .WithMany()
-                        .HasForeignKey("imgUrlId");
-
-                    b.Navigation("imgUrl");
+                        .WithMany("Catagories")
+                        .HasForeignKey("ProductsId");
                 });
 
             modelBuilder.Entity("Caveret.Models.Stock", b =>
@@ -473,19 +354,9 @@ namespace Caveret.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OrderProducts", b =>
+            modelBuilder.Entity("Caveret.Models.Products", b =>
                 {
-                    b.HasOne("Caveret.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("ordersid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Caveret.Models.Products", null)
-                        .WithMany()
-                        .HasForeignKey("productsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Catagories");
                 });
 #pragma warning restore 612, 618
         }
