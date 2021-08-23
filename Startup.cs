@@ -33,11 +33,16 @@ namespace Caveret
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            
+           
             services.AddDbContext<CaveretContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CaveretContext")));
+            
+            services.AddIdentity<IdentityUser,IdentityRole>().AddRoles<IdentityRole>(). AddEntityFrameworkStores<CaveretContext>();
+           // services.AddIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CaveretContext>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CaveretContext>();
+
+
 
 
         }
@@ -59,8 +64,10 @@ namespace Caveret
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+
+           // if (!CaveretDb.AspNetRoles.any(x => x.role.equals("Admin"))) { context.AspNetRoles.Add(new AspNetRoles { Role = "Admin" }); context.SaveChanges(); }
 
             app.UseEndpoints(endpoints =>
             {
@@ -69,5 +76,7 @@ namespace Caveret
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+       
+
     }
 }
