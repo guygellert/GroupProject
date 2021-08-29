@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Caveret.Data;
 using Caveret.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Caveret.Controllers
 {
@@ -23,6 +24,11 @@ namespace Caveret.Controllers
         public async Task<IActionResult> Index()
         {
             var caveretContext = _context.Stock.Include(s => s.product);
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             return View(await caveretContext.ToListAsync());
         }
 
@@ -190,32 +196,61 @@ namespace Caveret.Controllers
             //                )
             //          .Select(sto => sto);
 
-            var result = _context.Catagories.Include(c => c.products)
-                         .Select(c =>
-            new
-            {
-                CategoryName = c.catagorieName,
-                Stocks = (from prod in _context.Products
-                          where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
+            //var result = _context.Catagories.Include(c => c.products)
+            //             .Select(c =>
+            //new
+            //{
+            //    CategoryName = c.catagorieName,
+            //    Stocks = (from prod in _context.Products
+            //              where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
+            //              join sto in _context.Stock on prod.Id equals sto.productId
+            //              select sto.quantity).Sum()
+            //});
+
+            var result = _context.Catagories.Include(cat => cat.products)
+                .GroupBy(cat => cat.catagorieName)
+                .Select(cat => 
+                new 
+                {
+                    CategoryName = cat.Key,
+                    Stocks = (from prod in _context.Products
+                          where prod.Catagories.Select(cl => cl.catagorieName).Contains(cat.Key)
                           join sto in _context.Stock on prod.Id equals sto.productId
                           select sto.quantity).Sum()
-            });
+                }
+                )
+                ;
 
+            result = result.Where(res => res.Stocks > 0);
             return Json(result);
         }
         public JsonResult PossibleMaxCategory()
         {
-            var result = _context.Catagories.Include(c => c.products)
-             .Select(c =>
+            //var result = _context.Catagories.Include(c => c.products)
+            // .Select(c =>
+            //    new
+            //    {
+            //    CategoryName = c.catagorieName,
+            //    Stocks = (from prod in _context.Products
+            //              where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
+            //              join sto in _context.Stock on prod.Id equals sto.productId
+            //              select prod.price * sto.quantity).Sum()
+            //    });
+
+
+            var result = _context.Catagories.Include(cat => cat.products)
+    .GroupBy(cat => cat.catagorieName)
+             .Select(cat =>
                 new
                 {
-                CategoryName = c.catagorieName,
-                Stocks = (from prod in _context.Products
-                          where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
-                          join sto in _context.Stock on prod.Id equals sto.productId
-                          select prod.price * sto.quantity).Sum()
+                    CategoryName = cat.Key,
+                    Stocks = (from prod in _context.Products
+                              where prod.Catagories.Select(c => c.catagorieName).Contains(cat.Key)
+                              join sto in _context.Stock on prod.Id equals sto.productId
+                              select prod.price * sto.quantity).Sum()
                 });
 
+            result = result.Where(res => res.Stocks > 0);
             return Json(result);
             //var result;
             //var result = _context.Stock.Include(p => p.product).Include(p => p.product.catagory).

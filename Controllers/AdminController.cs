@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caveret.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Caveret.Controllers
 {
@@ -22,18 +23,27 @@ namespace Caveret.Controllers
         }
         public IActionResult Index()
         {
-           
-           
+            if (!User.IsInRole("IT"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
+
             return View();
         }
         public IActionResult Create()
         
         {
+            if (!User.IsInRole("IT"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             return View();
         }
 
         [HttpPost]
-
+        [Authorize(Roles = "IT")]
         public async Task <IActionResult> Create(ProjectRole rolee) {
             var roleExist = await rolemanager.RoleExistsAsync(rolee.RoleName);
             if (!roleExist) {

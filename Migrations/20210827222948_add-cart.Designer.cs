@@ -4,14 +4,16 @@ using Caveret.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Caveret.Migrations
 {
     [DbContext(typeof(CaveretContext))]
-    partial class CaveretContextModelSnapshot : ModelSnapshot
+    [Migration("20210827222948_add-cart")]
+    partial class addcart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,12 +52,17 @@ namespace Caveret.Migrations
                     b.Property<int>("orderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("userId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("cartItemId");
 
                     b.HasIndex("ProductsId");
+
+                    b.HasIndex("userId1");
 
                     b.ToTable("ShopCartItem");
                 });
@@ -433,7 +440,13 @@ namespace Caveret.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId1");
+
                     b.Navigation("Product");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Caveret.Models.Order", b =>

@@ -39,9 +39,15 @@ namespace Caveret
                     options.UseSqlServer(Configuration.GetConnectionString("CaveretContext")));
             
             services.AddIdentity<IdentityUser,IdentityRole>().AddRoles<IdentityRole>(). AddEntityFrameworkStores<CaveretContext>();
-           // services.AddIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CaveretContext>();
-
-
+            // services.AddIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CaveretContext>();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            //services.AddSession();
 
 
 
@@ -66,8 +72,9 @@ namespace Caveret
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-           // if (!CaveretDb.AspNetRoles.any(x => x.role.equals("Admin"))) { context.AspNetRoles.Add(new AspNetRoles { Role = "Admin" }); context.SaveChanges(); }
+            app.UseSession();
+            //app.UseMvc();
+            // if (!CaveretDb.AspNetRoles.any(x => x.role.equals("Admin"))) { context.AspNetRoles.Add(new AspNetRoles { Role = "Admin" }); context.SaveChanges(); }
 
             app.UseEndpoints(endpoints =>
             {

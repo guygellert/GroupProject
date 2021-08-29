@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Caveret.Data;
+using Caveret.Models;
 
 namespace Caveret.Controllers
 {
@@ -54,8 +55,13 @@ namespace Caveret.Controllers
         }
 
         // GET: Shops/Create
+
         public IActionResult Create()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("unauthorize", "Home");
+            }
             return View();
         }
 
@@ -66,10 +72,16 @@ namespace Caveret.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Address,Description,OpeningTime,ClosingTime")] Shops shops)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("unauthorize", "Home");
+            }
             if (ModelState.IsValid)
             {
+                Twitter t = new Twitter();
                 _context.Add(shops);
                 await _context.SaveChangesAsync();
+                await t.SendText("New !!! Our Honey Now Come To Base: " + shops.Description + "Now Between " + shops.OpeningTime.ToLocalTime() + "To : " + shops.ClosingTime.ToLocalTime());
                 return RedirectToAction(nameof(Index));
             }
             return View(shops);
@@ -78,6 +90,10 @@ namespace Caveret.Controllers
         // GET: Shops/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("unauthorize", "Home");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -98,6 +114,10 @@ namespace Caveret.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Address,Description,OpeningTime,ClosingTime")] Shops shops)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("unauthorize", "Home");
+            }
             if (id != shops.Id)
             {
                 return NotFound();
@@ -129,6 +149,10 @@ namespace Caveret.Controllers
         // GET: Shops/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return RedirectToAction("unauthorize", "Home");
+            }
             if (id == null)
             {
                 return NotFound();

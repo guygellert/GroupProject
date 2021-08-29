@@ -38,8 +38,16 @@
                     <li class="right-header list">
                         <div class="horizontal-menu">
                             <!-- menu element declaration-->
+                            @if (User.Identity.IsAuthenticated == true)
+                            {
+                            <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar-out" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
+                            }
+                            else
+                            {
                             <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
+                            }
                         </div>
+
                     </li>
                 </ul>
             </div>
@@ -71,18 +79,22 @@
                             </div>
                             @*<button class="e-btn action-btn" id="action-button">Checkout</button>*@
                         </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="admin">
 
-                        <div class="admin">
 
-                            <p class="main-menu-header">ADMIN</p>
-                            <div>
-                                <!-- menu element declaration-->
-                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="admin-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
 
+                                <p class="main-menu-header">ADMIN</p>
+                                <div>
+                                    <!-- menu element declaration-->
+                                    <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="admin-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret"></ul></div>
+
+                                </div>
                             </div>
+                        }
+                            <!-- end of normal state element declaration -->
                         </div>
-                        <!-- end of normal state element declaration -->
-                    </div>
                 </div><div class="content e-content-animation" style="transform: translateX(0px); margin-left: 220px;">
 
                     <img class="esh-catalog-title" src="~/images/third.webp" style="height: 260px; width: 100% " />
@@ -380,10 +392,14 @@
                     "text": "Account",
                     "items": [
                         {
-                            "text": "Sign In",
-                            "url": "/account/login",
+                            "text": "Register",
+                            "url": "/account/Register",
+                        },
+                        {
+                            "text": "Login",
+                            "url": "/account/Login",
                         }
-                    ]
+                    ] 
                 },
                 {
                     "text": "Home",
@@ -393,6 +409,25 @@
                 }
             ]
         }).appendTo("#horizontal-menubar");
+                new ejs.navigations.Menu({
+            "cssClass": "dock-menu",
+            "hoverDelay": 0.0,
+            "items": [
+                {
+                    "text": "Account",
+                    "items": [{
+                        "text": "Logout",
+                        "url": "/account/Logout",
+                    }]
+                },
+                {
+                    "text": "Home",
+                    "url": "/",
+                    "items": [
+                    ]
+                }
+            ]
+        }).appendTo("#horizontal-menubar-out");
         $.ajax({
             url: "/Home/getCatagoryList",
         }).done(function (data) {
@@ -410,23 +445,23 @@
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
             "items": [
+                {                    "text": "Shops",                    "iconCss": "icon-sweets icon",                    "url": "/shops",                    "items": []                },
                 {
-                    "text": "Branches",
-                    "iconCss": "icon-sweets icon",
-                    "items": [
-
-                    ]
+                    "text": "Cart",                    "iconCss": "icon-sweets icon",                    "url": "/AddToCart/myOrder",                    "items": []
                 },
-
+                {
+                    "text": "Order History",                    "iconCss": "icon-sweets icon",                    "url": "/AddToCart/orderHistory",                    "items": []
+                }
             ],
             "orientation": "Vertical"
         }).appendTo("#action-menubar");
 
-        new ejs.navigations.Menu({
+
+                new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
             "items": [
-                {
+                                    {
                     "text": "Add Item",
                     "iconCss": "icon-sweets icon",
                     "url": "/Products/Create",
@@ -438,12 +473,15 @@
                     "url": "/Products/Edit/1",
                     "items": []
                 },
+                {                    "text": "Stocks",                    "iconCss": "icon-sweets icon",                    "url": "/stocks",                    "items":[]                }
+
 
 
             ],
             "orientation": "Vertical"
-        }).appendTo("#admin-menubar");
-        new ejs.navigations.Sidebar({
+                            }).appendTo("#admin-menubar");
+
+            new ejs.navigations.Sidebar({
             "dockSize": "50px",
             "enableDock": true,
             "target": ".main-content",

@@ -56,6 +56,15 @@ namespace Caveret.Controllers
             return Json(result);
         }
 
+        public bool isAdmin()
+        {
+            
+            if (User.IsInRole("Admin"))
+            {
+                return true;
+            }
+            return false;
+        }
         public IActionResult Index()
         {
             return View();

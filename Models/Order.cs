@@ -22,7 +22,10 @@ namespace Caveret.Models
 
         public int quentity { get; set; }
 
+        public int productsId { get; set; }
         //public AspNetUser MyProperty { get; set; }
         public List<Products> products { get; set; }
+
+        public int price { get; set; }
     }
 }

@@ -65,6 +65,12 @@ namespace Caveret.Controllers
                 {
                     if (user.Email == "admin@gmail.com") {
                       await  _userManager.AddToRoleAsync(user, "Admin");
+
+                    
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "Regular");
                     }
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
