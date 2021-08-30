@@ -42,7 +42,7 @@
                 <div class="col-md-5">
                     <div class="form-group">
                         <label asp-for="imgUrl" class="control-label"></label>
-                        <input asp-for="imgUrl" class="form-control" />
+                        <select asp-for="imgUrl" class="form-control" asp-items="ViewBag.images"></select>
                         <span asp-validation-for="imgUrl" class="text-danger"></span>
                     </div>
                 </div>
