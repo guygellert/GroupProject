@@ -136,20 +136,19 @@
 
                 <td><b>Total</b></td>
                 <td>
-                    &#8377;  @sum
+                    ₪  @sum
                 </td>
             </tr>
 
         </tfoot>
 
     </table>
-    <div id="footer">
-        <img src="~/Templates/Footer.jpg" width="100%" height="60px" />
-    </div>
 
     <button type="button" id="btnPrint" class="btn btn-primary">Print</button>
     <button type="button"  class="btn btn-success">Continue Shopping</button>
-    <button onclick="onOrder()" type="button" value="CreateOrder" class="btn btn-warning">Place Order</button>
+    <form asp-action="CreateOrder">
+        <button type="submit" value="CreateOrder" class="btn btn-warning">Place Order</button>
+    </form>
 </div>
 <script type="text/javascript">
     function onOrder()

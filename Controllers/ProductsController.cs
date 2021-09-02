@@ -90,16 +90,6 @@ namespace Caveret.Controllers
                 var data = await response.Content.ReadAsStringAsync();
                 fStram.Write(result);
                 fStram.Close();
-                //ReadOnlySpan<Byte> ros = new ReadOnlySpan<byte>(result);
-               
-                //SoundPlayer sp = new SoundPlayer(request.RequestUri + request.RequestUri.LocalPath);
-                //sp.Play();
-                //SoundPlayer s = new SoundPlayer();
-                //s.Stream = null;
-                //s.Stream = body;
-                //s.Stream.Position = 0;
-                //s.Play();
-                //Console.WriteLine(body);
             }
         }
 
@@ -118,13 +108,18 @@ namespace Caveret.Controllers
             //           )
 
             var products = _context.Catagories.Include(cat => cat.products)
+                            
                            .Where(cat => (cat.Id.Equals(queryId) || queryId == null))
                            .SelectMany(cat => cat.products);
 
+            
+            products = from p in products
+                       join s in _context.Stock on p.Id equals s.productId
+                       where s.quantity >= 0
+                       select p;
             products = products.Where(prod => (prod.productName.Contains(queryName) || queryName == null) &&
                                               (prod.price <= queryMaxPrice || queryMaxPrice == 0))
-                                .Select(prod => prod);
-
+                                .Select(prod => prod).Include(img => img.imgUrl);
 
 
             return View("Index" ,  products);

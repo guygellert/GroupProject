@@ -1,6 +1,6 @@
 ﻿function create_type_pie_chart(data, wanted_element) {
-    var width  = 300,
-        height = 300,
+    var width  = 200,
+        height = 200,
         radius = Math.min(width, height) / 2;
     var color = d3.scaleOrdinal(d3.schemeCategory10);
 

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Caveret.Models.Stock>
-
+﻿@*@model IEnumerable<Caveret.Models.Stock>*@
+@model PaginatedList<Caveret.Models.Stock>
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,14 +9,24 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.product)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.quantity)
+                Quantity
             </th>
             <th></th>
         </tr>
@@ -40,7 +50,25 @@
         }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
 <div class="row" style="display: flex;">
     <div class="text-center stat-card col-md-6" style="width: 600px;">
         <h2 class="ma-2">כמות לפי קטגוריה</h2>
@@ -51,18 +79,44 @@
         <div id="maximum-profit-category"></div>
     </div>
 </div>
-@*<div class="row" style="display: flex;">
+<div class="row" style="display: flex;">
+    Income Product By Category :
+</div>
+<div class="row" style="display: flex;">
 
-    <div class="text-center stat-card">
-        <h2 class="mt-2">Monthly reservations</h2>
-        <div id="monthly-reservations-chart"></div>
-    </div>
-</div>*@
+    @foreach (var category in ViewData["catagories"] as List<Catagories>)
+    {
+        <div class="text-center stat-card">
+            <h2 class="mt-2">@category.catagorieName</h2>
+            <div id=@("catgory-" + category.Id)></div>
+        </div>
+    }
+</div>
 
 
 <script src="~/js/app.js"></script>
 
+
+@*@foreach (var cat in ViewData["catagories"] as List<Catagories>)
+    {
+        <script type="text/javascript">
+            $.ajax({
+                url: "/Stocks/CategoryProfit?category=" + cat.id,
+                context: document.body
+            }).done(function (data) {
+                create_type_pie_chart(data, "#catgory-" + cat.id);
+            });
+        </script>
+    }*@
 <script type="text/javascript">
+    function profitCategory(id) {
+        $.ajax({
+            url: "/Stocks/CategoryProfit?category=" + id,
+            context: document.body
+        }).done(function (data) {
+            create_type_pie_chart(data, "#catgory-" + id);
+        });
+    }
     $.ajax({
         url: "/Stocks/StocksByCategories",
         context: document.body
@@ -74,7 +128,36 @@
         url: "/Stocks/PossibleMaxCategory",
         context: document.body
     }).done(function (data) {
+        console.log(data);
         create_type_pie_chart(data, "#maximum-profit-category");
     });
 
+
+    $.ajax({
+        url: "/Stocks/CategoryProfit",
+        context: document.body
+    }).done(function (data) {
+        console.log(data);
+        var listCate = [];
+        var previousId = null;
+        for (var i = 0; i < data.length; i++) {
+            if (previousId == null) {
+                previousId = data[i].id;
+                listCate = [];
+            }
+            if (previousId != data[i].id) {
+
+                console.log(listCate)
+                create_type_pie_chart(listCate, "#catgory-" + previousId);
+                previousId = data[i].id;
+                listCate = []
+            }
+            listCate.push({ "categoryName": data[i].categoryName, "stocks": data[i].stocks });
+        }
+
+    });
+
+
+
 </script>
+
