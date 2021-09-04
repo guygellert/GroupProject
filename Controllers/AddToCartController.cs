@@ -294,21 +294,25 @@ namespace Caveret.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var binFormatter = new BinaryFormatter();
-            byte[] arr;
-            var mStream = new MemoryStream();
-            mStream.Write(HttpContext.Session.Get("cart"),
-              0,
-              HttpContext.Session.Get("cart").Length);
+            ////var binFormatter = new BinaryFormatter();
+            ////byte[] arr;
+            ////var mStream = new MemoryStream();
+            ////mStream.Write(HttpContext.Session.Get("cart"),
+            ////  0,
+            ////  HttpContext.Session.Get("cart").Length);
 
-            mStream.Position = 0;
-            List<Products> li = binFormatter.Deserialize(mStream) as List<Products>;
-            li.RemoveAll(x => x.Id == prod.Id);
-            binFormatter.Serialize(mStream, li);
-            arr = mStream.ToArray();
-            HttpContext.Session.Set("cart", arr);
+            ////mStream.Position = 0;
+            ////List<Products> li = binFormatter.Deserialize(mStream) as List<Products>;
+            ///
+            List<Products> lp = GetProductsSession();
+
+
+           int HowManyToRemove = lp.Where(x => x.Id == prod.Id).Count();
+            lp.RemoveAll(x => x.Id == prod.Id);
+
+            InsertProductsSession(lp);
             HttpContext.Session.SetInt32("count",
-    (int)(HttpContext.Session.GetInt32("count") - 1));
+    (int)(HttpContext.Session.GetInt32("count") - HowManyToRemove));
             return RedirectToAction("Myorder", "AddToCart");
             //return View();
         }
