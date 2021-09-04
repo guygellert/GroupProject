@@ -251,9 +251,14 @@ namespace Caveret.Controllers
                     c.ProductsId = prod.Key;
                     c.Quantity = prod.Count(cou => cou.Id == prod.Key);
                     c.userId = _userManager.Users.FirstOrDefault(user => user.Email == HttpContext.User.Identity.Name).Id.ToString();
-                    c.orderId = _context.ShopCartItem.Where(cart => cart.userId == c.userId).Max(cart => cart.orderId);
-                    c.orderId++;
+                    var ordersOfUser = _context.ShopCartItem.Where(cart => cart.userId == c.userId);
 
+                    c.orderId = 0;
+                    if(ordersOfUser.Count() > 0)
+                    { 
+                    c.orderId = ordersOfUser.Max(cart => cart.orderId);
+                    c.orderId++;
+                    }
 
                     order.Add(c);
 
