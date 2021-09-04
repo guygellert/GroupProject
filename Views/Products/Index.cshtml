@@ -3,26 +3,25 @@
 
 @model IEnumerable<Caveret.Models.Products>
 @*@model Caveret.Controllers.ProductsController*@
-<h1>המוצרים שלנו</h1>
+<h1>Our Products</h1>
 
-<h2>אז מה בא לנו היום?</h2>
+<h2>So what do you want today?</h2>
 <div class="row">
     <div class="col-1">
             <form asp-action="Search" class="">
 
                 <div class="card text-center">
-                    <div class="card-header">חיפוש</div>
+                    <div class="card-header">Search</div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="row">
-
-                                        <div class="col-md-6">
-                                            <select name="queryId" class="form-control" asp-items="@ViewBag.catagories"></select>
+                                        <div class="col-md-3">
+                                            <label name="id" class="control-label labelStyle">:Category</label>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label name="id" class="control-label labelStyle">קטגוריה:</label>
+                                        <div class="col-md-9">
+                                            <select name="queryId" class="form-control" asp-items="@ViewBag.catagories"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -30,12 +29,11 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="row">
-
-                                        <div class="col-md-6">
-                                            <input type="text" name="queryName" class="form-control" />
+                                        <div class="col-md-3">
+                                            <label name="name" class="control-label labelStyle">:Product Name</label>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label name="name" class="control-label labelStyle">שם מוצר :</label>
+                                        <div class="col-md-9">
+                                            <input type="text" name="queryName" class="form-control" />
                                         </div>
                                     </div>
                                     
@@ -45,12 +43,11 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <div class="row">
-
-                                        <div class="col-md-6">
-                                            <input name="queryMaxPrice" type="number" min="0" max="999999" value="999999" />
+                                        <div class="col-md-3">
+                                            <label name="maxPrice" class="control-label labelStyle">:Limit Price</label>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label name="maxPrice" class="control-label labelStyle">עד מחיר:</label>
+                                        <div class="col-md-4">
+                                            <input name="queryMaxPrice" type="number" min="0" max="999999" value="999999" />
                                         </div>
                                     </div>
                                     
@@ -59,7 +56,7 @@
                         </div>
                                 <div class="card-footer">
 
-                                    <input type="submit" value="חיפוש" class="btn btn-primary" />
+                                    <input type="submit" value="Search" class="btn btn-primary" />
                                 </div>
                             
                         </div>

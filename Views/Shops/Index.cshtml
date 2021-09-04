@@ -6,26 +6,26 @@
 
 <form asp-action="Search" class="">
     <div class="card text-center">
-        <div class="card-header">חיפוש</div>
+        <div class="card-header">Search</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     <div class="row">
-                        <div class="col-md-6">
-                            <input name="queryAddress" class="form-control" />
+                        <div class="col-md-3">
+                            <label name="name" class="control-label labelStyle">:Address</label>
                         </div>
-                        <div class="col-md-6">
-                            <label name="name" class="control-label labelStyle">כתובת :</label>
+                        <div class="col-md-9">
+                            <input name="queryAddress" class="form-control" />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="row">
-                        <div class="col-md-6">
-                            <input name="queryName" class="form-control" />
+                        <div class="col-md-3">
+                            <label name="name" class="control-label labelStyle">:Store Name</label>
                         </div>
-                        <div class="col-md-6">
-                            <label name="name" class="control-label labelStyle">שם חנות :</label>
+                        <div class="col-md-9">
+                            <input name="queryName" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
 
             </div>
             <div class="card-footer">
-                <input type="submit" value="חיפוש" class="btn btn-primary" />
+                <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         </div>
     </div>
