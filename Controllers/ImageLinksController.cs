@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Caveret.Data;
 using Caveret.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Caveret.Controllers
 {
@@ -22,12 +23,22 @@ namespace Caveret.Controllers
         // GET: ImageLinks
         public async Task<IActionResult> Index()
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             return View(await _context.ImageLink.ToListAsync());
         }
 
         // GET: ImageLinks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +57,11 @@ namespace Caveret.Controllers
         // GET: ImageLinks/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             return View();
         }
 
@@ -54,6 +70,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Create([Bind("Id,Address")] ImageLink imageLink)
         {
             if (ModelState.IsValid)
@@ -68,6 +85,11 @@ namespace Caveret.Controllers
         // GET: ImageLinks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -86,6 +108,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Address")] ImageLink imageLink)
         {
             if (id != imageLink.Id)
@@ -117,8 +140,14 @@ namespace Caveret.Controllers
         }
 
         // GET: ImageLinks/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -137,6 +166,7 @@ namespace Caveret.Controllers
         // POST: ImageLinks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var imageLink = await _context.ImageLink.FindAsync(id);

@@ -25,7 +25,7 @@ namespace Caveret.Controllers
             return View(await _context.Shops.ToListAsync());
         }
 
-        public async Task<IActionResult> Search(string queryName, string queryAddress)
+        public async Task<IActionResult> Search(string queryName, string queryAddress,bool isOpen)
         {
             var shops = from shop in _context.Shops 
                         select shop;
@@ -33,7 +33,30 @@ namespace Caveret.Controllers
             shops = shops.Where(shop => ((shop.Description.Contains(queryName) || queryName == null) &&
                                         (shop.Address.Contains(queryAddress) || queryAddress == null))).Select(shop => shop);
 
-            return View("Index", shops);
+            List<Shops> shopList = shops.ToList();
+            if (isOpen == true)
+            {
+                
+                List<Shops> shopListOpen = new List<Shops>();
+                TimeSpan now = DateTime.Now.TimeOfDay;
+                shopList.ForEach(sho =>
+               {
+                   if (sho.OpeningTime < sho.ClosingTime
+                       && now >= sho.OpeningTime.TimeOfDay && now < sho.ClosingTime.TimeOfDay)
+                   {
+                       shopListOpen.Add(sho);
+                   }
+                   else if (sho.OpeningTime > sho.ClosingTime &&
+                           (now >= sho.OpeningTime.TimeOfDay || now < sho.ClosingTime.TimeOfDay))
+                   {
+                       shopListOpen.Add(sho);
+                   }
+               });
+                shopList = shopListOpen;
+                //shops = shopListOpen();
+            }
+
+            return View("Index", shopList);
         }
 
         // GET: Shops/Details/5

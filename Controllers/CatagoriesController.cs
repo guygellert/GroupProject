@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Caveret.Data;
 using Caveret.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Caveret.Controllers
 {
@@ -22,12 +23,24 @@ namespace Caveret.Controllers
         // GET: Catagories
         public async Task<IActionResult> Index()
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
+
             return View(await _context.Catagories.ToListAsync());
         }
 
         // GET: Catagories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -46,12 +59,18 @@ namespace Caveret.Controllers
         // GET: Catagories/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             return View();
         }
 
         // POST: Catagories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,catagorieName")] Catagories catagories)
@@ -68,6 +87,11 @@ namespace Caveret.Controllers
         // GET: Catagories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -86,6 +110,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,catagorieName")] Catagories catagories)
         {
             if (id != catagories.Id)
@@ -117,8 +142,14 @@ namespace Caveret.Controllers
         }
 
         // GET: Catagories/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -137,6 +168,7 @@ namespace Caveret.Controllers
         // POST: Catagories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var catagories = await _context.Catagories.FindAsync(id);

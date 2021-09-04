@@ -11,6 +11,7 @@ using Caveret.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Caveret.Controllers
 {
@@ -26,23 +27,33 @@ namespace Caveret.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public ActionResult Add(Products prod)
+
+       
+        public ActionResult Add(Products prod,int quantity)
         {
             var binFormatter = new BinaryFormatter();
             string jsonCart;
             var mStream = new MemoryStream();
             byte[] arr;
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             List<Products> li = new List<Products>();
             Encoding u8 = Encoding.UTF8;
             if (this.HttpContext.Session.Get("cart") == null)
             {
-                
 
-                
+
+
 
                 //This gives you the byte array.
-                
-                li.Add(prod);
+
+                for (int i = 0; i < quantity; i++)
+                {
+                    li.Add(prod);
+                }
                 InsertProductsSession(li);
                 //jsonCart = JsonSerializer.Serialize(li);
                 //HttpContext.Session.SetString("cart", jsonCart);
@@ -53,7 +64,7 @@ namespace Caveret.Controllers
                 //HttpContext.Session.Set("cart", arr);
                 ViewBag.cart = li.Count();
 
-                HttpContext.Session.SetInt32("count", 1);
+                HttpContext.Session.SetInt32("count", quantity);
                 //Session["count"] = 1;
 
 
@@ -68,7 +79,10 @@ namespace Caveret.Controllers
                li =  GetProductsSession();
                 //li = JsonSerializer.Deserialize<List<Products>>(HttpContext.Session.GetString("cart"));
                 //List<Products> li = binFormatter.Deserialize(mStream) as List<Products>;
-                li.Add(prod);
+                for (int i = 0; i < quantity; i++)
+                {
+                    li.Add(prod);
+                }
                 //binFormatter.Serialize(mStream, li);
                 //jsonCart = JsonSerializer.Serialize(li);
                 InsertProductsSession(li);
@@ -77,7 +91,7 @@ namespace Caveret.Controllers
                 //Session["cart"] = li;
                 ViewBag.cart = li.Count();
                 HttpContext.Session.SetInt32("count",
-                    (int)(HttpContext.Session.GetInt32("count") + 1));
+                    (int)(HttpContext.Session.GetInt32("count") + quantity));
                 //Session["count"] = Convert.ToInt32(Session["count"]) + 1;
                 
             }
@@ -127,6 +141,12 @@ namespace Caveret.Controllers
                 });
             }
 
+
+            ViewData["isDisabled"] = false;
+            if (MyOrder.Count == 0)
+            {
+                ViewData["isDisabled"] = true;
+            }
             return View(MyOrder);
 
         }
@@ -169,6 +189,10 @@ namespace Caveret.Controllers
 
         public ActionResult OrderDetails(int? id)
         {
+            if (this.User.Identity.IsAuthenticated == false)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var products = _context.ShopCartItem.Where(cart => cart.orderId == id)
                         .Select(item => new Products
                         {
@@ -185,9 +209,15 @@ namespace Caveret.Controllers
         
         public ActionResult CreateOrder(List<Products> lip)
         {
+            if (this.User.Identity.IsAuthenticated == false)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            
             if (this.HttpContext.Session.Get("cart") == null)
             {
-                return View();
+                return RedirectToAction("Index", "Home");
             }
                 List<CartItem> order = new List<CartItem>();
             
@@ -259,6 +289,11 @@ namespace Caveret.Controllers
         }
         public ActionResult Remove(Products prod)
         {
+            if (this.User.Identity.IsAuthenticated == false)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var binFormatter = new BinaryFormatter();
             byte[] arr;
             var mStream = new MemoryStream();

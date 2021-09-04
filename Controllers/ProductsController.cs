@@ -10,6 +10,8 @@ using Caveret.Models;
 using System.Net.Http;
 using System.Media;
 using System.IO;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 //using Caveret.Handler;
 namespace Caveret.Controllers
 {
@@ -22,6 +24,17 @@ namespace Caveret.Controllers
             _context = context;
         }
 
+        public ActionResult PreapreToAdd(Products prod, int quantity)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            //TempData["Products"] = prod;
+            RouteValueDictionary rvd = new RouteValueDictionary(prod);
+            rvd.Add("quantity", quantity);
+            return RedirectToAction("Add", "AddToCart", rvd);
+        }
         public async void textToSpeechPost(Products p)
         {
 
@@ -93,7 +106,7 @@ namespace Caveret.Controllers
             }
         }
 
-        public async Task<IActionResult> Search(int queryId, string queryName,int queryMaxPrice)
+        public async Task<IActionResult> Search(int queryId, string queryName,int queryMaxPrice,int pageNumber)
         {
             
             ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
@@ -148,7 +161,9 @@ namespace Caveret.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["CurrentFilter"] = 1;
+            ViewData["LimitQuantity"] = _context.Stock.FirstOrDefault(sto => sto.productId == id)
+                .quantity;
             var caveretContext = _context.Products.Include(s => s.imgUrl);
             var products = await caveretContext
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -163,6 +178,11 @@ namespace Caveret.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             ViewData["catagories"] = new SelectList(_context.Catagories,nameof(Catagories.Id),nameof(Catagories.catagorieName));
             ViewData["images"] = new SelectList(_context.ImageLink, nameof(ImageLink.Id), nameof(ImageLink.Address));
 
@@ -174,6 +194,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Create([Bind("Id,productName,price,description,imgUrlId")] Products products , int [] Catagories, int imgUrl)
         {
             if (ModelState.IsValid)
@@ -199,6 +220,11 @@ namespace Caveret.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
             ViewData["images"] = new SelectList(_context.ImageLink, nameof(ImageLink.Id), nameof(ImageLink.Address));
             if (id == null)
@@ -207,22 +233,27 @@ namespace Caveret.Controllers
             }
 
             var products = await _context.Products.FindAsync(id);
+            var prod = _context.Products.Where(prod => prod.Id == id).Include(prod => prod.Catagories);
+            List<Catagories> catList = prod.FirstOrDefault(prod => prod.Id == id).Catagories;
+
+            products.Catagories = catList;
             if (products == null)
             {
                 return NotFound();
             }
             return View(products);
         }
-        private void publishToTwitter()
-        {
-            Twitter t = new Twitter();
-            t.SendText("Now Today Double Trouble Product");
-        }
+        //private void publishToTwitter()
+        //{
+        //    Twitter t = new Twitter();
+        //    t.SendText("Now Today Double Trouble Product");
+        //}
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,productName,price,description,imgUrlId")] Products products, int[] Catagories, int imgUrl)
         {
             if (id != products.Id)
@@ -234,11 +265,30 @@ namespace Caveret.Controllers
             {
                 try
                 {
+                    
+                    var prod = _context.Products.Include(prod => prod.Catagories)
+                        .Include(prod => prod.imgUrl)
+                  .Where(a => a.Id == id)
+                  .First();
 
-                    products.Catagories = new List<Catagories>();
-                    products.Catagories.AddRange(_context.Catagories.Where(x => Catagories.Contains(x.Id)));
-                    products.imgUrl = _context.ImageLink.Find(imgUrl);
-                    _context.Update(products);
+                    prod.imgUrl = _context.ImageLink.First(img => img.Id == imgUrl);
+
+                    prod.price = products.price;
+                    prod.productName = products.productName;
+                    prod.description = products.description;
+
+                    var count = prod.Catagories.Count;
+                    for (var i = 0; i < count;)
+                    {
+                        prod.Catagories.Remove(prod.Catagories.ElementAt(i));
+                        count--;
+                    }
+                    foreach (var idCat in Catagories)
+                    {
+                    
+                        Catagories category = _context.Catagories.Where(ct => ct.Id == idCat).First();
+                        prod.Catagories.Add(category);
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -260,6 +310,11 @@ namespace Caveret.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!User.IsInRole("Admin"))
+            {
+
+                return View("../Home/Unauthorize");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -278,6 +333,7 @@ namespace Caveret.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var products = await _context.Products.FindAsync(id);

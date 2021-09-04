@@ -13,43 +13,52 @@
     }
     <a asp-action="Index">Back to List</a>
 </div>
-<div class="products">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 single-top-left vcenter">
-                @*<ul class="slides">*@
-                   @* <li>*@
-                        <img class="slides-image" src="~/images/@Model.imgUrl.Address" alt="" />
-                   @* </li>*@
-               @* </ul>*@
-            </div>
-
-            <div class="col-md-6 single-top-right vcenter">
-                <div class="row">
-                    <h3>@Model.productName</h3>
-
-                    <h3" class="actual-price">₪@Model.price</h3">
-                </div>
-                <div class="row">
-                    <p>@Model.description</p>
-                </div>
-
-                @if (User.Identity.IsAuthenticated == true)
-                {
-
-
+<form asp-action="PreapreToAdd" method="get">
+    <div class="products">
+        <div class="container">
+            <div class="row">
+                <aside>
+                    @* <div class="col-md-6 single-top-left vcenter">*@
+                    @*<ul class="slides">*@
+                    @* <li>*@
+                    <img class="slides-image" src="~/images/@Model.imgUrl.Address" alt="" />
+                    @* </li>*@
+                    @* </ul>*@
+                    @*</div>*@
+                </aside>
+                <div class="col-md-6 single-top-right vcenter">
                     <div class="row">
-                        <a id="btn_add" href="@Url.Action("Add", "AddToCart", Model)" class="btn btn-info btn-lg" style="margin-left:60px">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart
-                        </a>
-                        @*<input type="button" name="sbmt" onclick="speeach()" value="Submit">*@
+                        <h3>@Model.productName</h3>
+
+                        <h3" class="actual-price">₪@Model.price</h3">
                     </div>
-                }
+                    <div class="row">
+                        <p>@Model.description</p>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+
+
+                <div class="row">
+                    <input asp-for="Id" type="hidden" value="@Model.Id" />
+                    <input asp-for="productName" type="hidden" value="@Model.productName" />
+                    <input asp-for="price" type="hidden" value="@Model.price" />
+                    @*<input asp-for="" type="hidden" value="@Model.Id" />
+                    <input name="prod" type="hidden" value="@Model" />*@
+                    <input type="number" min="1" max="@ViewData["LimitQuantity"]" name="quantity" />
+                    <input  value="Add To Cart" type="submit" id="btn_add" class="btn btn-info btn-lg" style="margin-left:60px">
+                    <span  ></span> 
+
+
+                    @*<input type="button" name="sbmt" onclick="speeach()" value="Submit">*@
+                </div>
+                    }
                 </div>
             </div>
+        </div>
     </div>
-</div>
-
+</form>
 @*<div>*@
     @*<div class="col-xs-12 col-sm-6 col-md-4 p-2">
         <div class="product-grids product-item">
@@ -95,6 +104,13 @@
 <style>
     .products {
         background-size: cover;
+    }
+
+    aside {
+        width: 30%;
+        padding-left: 15px;
+        margin-left: 15px;
+        float: left;
     }
 
         .products .title h3 {

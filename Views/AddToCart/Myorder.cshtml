@@ -84,7 +84,6 @@
 
     <table class="table table-hover" width="100%">
         <thead>
-            <img src="~/Templates/Header.jpg" width="100%" height="70px" />
             <tr>
 
                 <th>Id</th>
@@ -109,7 +108,7 @@
                         @*<img id="img1" src="~/Images/@x." height="100" width="75" />*@
 
                     </td>
-                    <td>&#8377;@x.price</td>
+                    <td>₪ @x.price</td>
 
                     <td>
 
@@ -145,9 +144,8 @@
     </table>
 
     <button type="button" id="btnPrint" class="btn btn-primary">Print</button>
-    <button type="button"  class="btn btn-success">Continue Shopping</button>
     <form asp-action="CreateOrder">
-        <button type="submit" value="CreateOrder" class="btn btn-warning">Place Order</button>
+        <button disabled="@ViewData["isDisabled"]" type="submit" value="CreateOrder" class="btn btn-warning">Place Order</button>
     </form>
 </div>
 <script type="text/javascript">

@@ -20,6 +20,9 @@ namespace Caveret.Controllers
             _context = context;
         }
 
+
+
+
         // GET: Stocks
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString , int? pageNumber)
         {
@@ -28,7 +31,7 @@ namespace Caveret.Controllers
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CurrentFilter"] = searchString;
             var caveretContext = from s in _context.Stock
-                                 join prod in _context.Products on s.id equals prod.Id
+                                 join prod in _context.Products on s.productId equals prod.Id
                                  select new Stock { product = prod , id = s.id , quantity = s.quantity , productId = s.productId};
 
             if (searchString != null)
@@ -87,7 +90,18 @@ namespace Caveret.Controllers
         // GET: Stocks/Create
         public IActionResult Create()
         {
-            ViewData["productId"] = new SelectList(_context.Products, "Id", "productName");
+            var productsQuary = _context.Products;
+           var productsInStockQuary = from prod in _context.Products
+            join sto in _context.Stock on prod.Id equals sto.productId
+            select prod;
+
+            List<Products> products = productsQuary.ToList();
+            List<Products> productsInStock = productsInStockQuary.ToList();
+            productsInStock.ForEach(prodInStock =>
+            {
+                products.Remove(prodInStock);
+            });
+            ViewData["productId"] = new SelectList(products, "Id", "productName");
             return View();
         }
 
@@ -195,18 +209,20 @@ namespace Caveret.Controllers
         {
             return _context.Stock.Any(e => e.id == id);
         }
+
+        //[Authorize(Roles = "Admin")]
         public JsonResult StocksByCategories()
         {
             var result = _context.Catagories.Include(cat => cat.products)
                 .GroupBy(cat => cat.catagorieName)
-                .Select(cat => 
-                new 
+                .Select(cat =>
+                new
                 {
                     CategoryName = cat.Key,
                     Stocks = (from prod in _context.Products
-                          where prod.Catagories.Select(cl => cl.catagorieName).Contains(cat.Key)
-                          join sto in _context.Stock on prod.Id equals sto.productId
-                          select sto.quantity).Sum()
+                              where prod.Catagories.Select(cl => cl.catagorieName).Contains(cat.Key)
+                              join sto in _context.Stock on prod.Id equals sto.productId
+                              select sto.quantity).Sum()
                 }
                 )
                 ;
@@ -214,20 +230,13 @@ namespace Caveret.Controllers
             result = result.Where(res => res.Stocks > 0);
             return Json(result);
         }
+
+        [Authorize(Roles = "Admin")]
         public JsonResult CategoryProfit()
         {
             var productsProfit = new object();
             List<Catagories> cList = _context.Catagories.ToList();
             List<object> stats = new List<object>();
-            //cList.ForEach(category =>
-            ////{
-            //    var products = _context.Catagories.Include(cat => cat.products)
-
-            //       .Where(cat => (cat.Id.Equals(category) || category == null))
-            //       .SelectMany(cat => cat.products);
-
-            //List<Catagories> cList = _context.Catagories.ToList();
-
             cList.ForEach(category =>
             {
                 var products = _context.Catagories.Include(cat => cat.products)
@@ -259,23 +268,14 @@ namespace Caveret.Controllers
             //IEnumerable<satistics> results = stats.Where(stat => stat.Stocks > 0);
             return Json(stats);
         }
+        
+        [Authorize(Roles = "Admin")]
             public JsonResult PossibleMaxCategory()
         {
-            //var result = _context.Catagories.Include(c => c.products)
-            // .Select(c =>
-            //    new
-            //    {
-            //    CategoryName = c.catagorieName,
-            //    Stocks = (from prod in _context.Products
-            //              where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
-            //              join sto in _context.Stock on prod.Id equals sto.productId
-            //              select prod.price * sto.quantity).Sum()
-            //    });
-
 
             var result = _context.Catagories.Include(cat => cat.products)
-    .GroupBy(cat => cat.catagorieName)
-             .Select(cat =>
+                         .GroupBy(cat => cat.catagorieName)
+                         .Select(cat =>
                 new
                 {
                     CategoryName = cat.Key,
@@ -287,14 +287,6 @@ namespace Caveret.Controllers
 
             result = result.Where(res => res.Stocks > 0);
             return Json(result);
-            //var result;
-            //var result = _context.Stock.Include(p => p.product).Include(p => p.product.catagory).
-            //    GroupBy(p => p.product.catagory.catagorieName).Select(p =>
-            //new
-            //{
-            //    CategoryName = p.Key,
-            //    Profit = p.ToList().Sum( x=> x.product.price)
-            //});
 
         }
     }
