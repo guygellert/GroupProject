@@ -24,21 +24,22 @@
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="text-align: center;">
                     <h1>שעות פעילות</h1>
                     <h1>א-ה:  <br />@Html.DisplayFor(model => model.OpeningTime) - @Html.DisplayFor(model => model.ClosingTime)</h1>
+                    <p id="status"></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-    <h4>Shops</h4>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>
+<h4>Shops</h4>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
     var map;
     var searchManager;
 
@@ -94,5 +95,51 @@
             searchManager.geocode(searchRequest);
         }
     }
-    </script>
-    <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AmTbZrbvXwVy0XO22GneszL2g9TZqn9gsLSs8ejbQe-EIb5_QvppPlAyyD_59HII" async defer></script>
+</script>
+<script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AmTbZrbvXwVy0XO22GneszL2g9TZqn9gsLSs8ejbQe-EIb5_QvppPlAyyD_59HII" async defer></script>
+
+<script>
+    function IsOpen(open, close, curr) {
+        if (open == close) {
+            return true;
+        }
+        else if (open < close) {
+            return (curr >= open && curr < close);
+        } else {
+            return (curr >= open || curr < close);
+        }
+    }
+
+$( document ).ready(function() {
+
+    var open = "@Model.OpeningTime";
+    var close = "@Model.ClosingTime";
+    var open_date = new Date(open);
+    var close_date = new Date(close);
+    var now_date = new Date();
+
+    var open_minutes = open_date.getMinutes() + open_date.getHours() * 60;
+    var close_minutes = close_date.getMinutes() + close_date.getHours() * 60;
+    var now_minutes = now_date.getMinutes() + now_date.getHours() * 60;
+
+    if (IsOpen(open_minutes, close_minutes, now_minutes)) {
+        $("#status").html("Open");
+        $("#status").addClass("open");
+    } else {
+        $("#status").html("Closed");
+        $("#status").addClass("closed");
+    }
+});
+</script>
+
+
+<style>
+    .open {
+        color: green;
+    }
+
+    .closed {
+        color: red;
+    }
+
+</style>
