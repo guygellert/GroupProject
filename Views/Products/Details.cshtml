@@ -30,11 +30,14 @@
                     <div class="row">
                         <h3>@Model.productName</h3>
 
-                        <h3" class="actual-price">₪@Model.price</h3">
-                    </div>
-                    <div class="row">
-                        <p>@Model.description</p>
-                    </div>
+                    <h3" class="actual-price">₪@Model.price</h3">
+                </div>
+                <div class="row">
+                    <p>@Model.description</p>
+                    <audio controls id="linkAudio">
+                        <source src="@("/voice/"+Model.Id+".mp3")" type="audio/mpeg">
+                    </audio>
+                </div>
 
                     @if (User.Identity.IsAuthenticated == true)
                     {
@@ -177,6 +180,7 @@
             color: #999;
         }
 </style>
+
 <script type="text/javascript">
     function speeach() {
         //const data = null;
