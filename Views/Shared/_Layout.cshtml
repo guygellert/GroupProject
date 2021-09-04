@@ -37,17 +37,24 @@
                     <li id="hamburger" class="icon-menu icon list" (click)="toggle()"></li>
                     <li class="right-header list">
                         <div class="horizontal-menu">
+
                             <!-- menu element declaration-->
                             @if (User.Identity.IsAuthenticated == true)
                             {
-                            <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar-out" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar-out" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
                             }
                             else
                             {
-                            <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="horizontal-menubar" class="e-control e-menu e-lib e-menu-parent account" role="menubar" tabindex="0"></ul></div>
                             }
                         </div>
 
+                    </li>
+                    <li class="right-header list">
+                        <nav>
+                            <a class="glyphicon glyphicon-shopping-cart" href="/AddToCart/myOrder">Cart</a>
+                            <a class="glyphicon glyphicon-lock" href="/AddToCart/orderHistory">Order-History</a>
+                        </nav>
                     </li>
                 </ul>
             </div>
@@ -55,7 +62,7 @@
             <!-- end of sidebar element -->
             <!-- main content declaration -->
             <div class="main-content e-sidebar-context" id="maintext">
-                <div id="sidebar-menu" class="e-control e-sidebar e-lib e-sidebar-absolute e-right e-dock e-transition e-touch e-open e-push" style="width: 220px; z-index: 1000">
+                <div id="sidebar-menu" class="e-control e-sidebar e-lib e-sidebar-absolute e-right e-dock e-transition e-touch e-open e-push" style="width: 220px; height:150%; z-index: 1000">
                     <div class="dock-menu">
                         <!-- normal state element declaration -->
                         <div class="main-menu">
@@ -63,7 +70,7 @@
                             <p class="main-menu-header">CATEGORIES</p>
                             <div>
                                 <!-- menu element declaration-->
-                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul onclick="pop()" id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret" ></ul></div>
+                                <div class="e-menu-wrapper dock-menu e-lib e-keyboard"><ul id="main-menubar" class="e-control e-menu e-lib e-vertical e-menu-parent" role="menubar" tabindex="0" aria-orientation="vertical"> class="e-icons e-caret" ></ul></div>
 
                             </div>
 
@@ -93,8 +100,8 @@
                                 </div>
                             </div>
                         }
-                            <!-- end of normal state element declaration -->
-                        </div>
+                        <!-- end of normal state element declaration -->
+                    </div>
                 </div><div class="content e-content-animation" style="transform: translateX(0px); margin-left: 220px;">
 
                     <img class="esh-catalog-title" src="~/images/third.webp" style="height: 260px; width: 100% " />
@@ -102,12 +109,22 @@
                     <div class="container" style="width: auto;">
                         <main role="main" class="pb-3">
                             @RenderBody()
+                            <footer>
+                                <p>
+                                    Have A Nice Day
+                                </p>
+                                <div></div>
+                            </footer>
                         </main>
+
                     </div>
                 </div>
+
             </div>
+
             <!--end of main content declaration -->
         </div>
+
     </div>
 
 
@@ -120,16 +137,18 @@
             document.getElementById('hamburger').addEventListener('click', function () {
                 sidebarInstance.toggle();
             });
-
         });
     </script>
     <style>
+        footer {
+            text-align: center;
+            padding: 3px;
+        }
 
         ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
             color: white;
             opacity: 1; /* Firefox */
         }
-
         /* header-section styles */
         #header.header-section,
         #header .search-icon {
@@ -159,8 +178,6 @@
             padding-left: 15px;
             margin: 0;
         }
-
-
         /* text input styles */
         #header .search-icon {
             float: left;
@@ -180,10 +197,8 @@
             outline: none;
             cursor: default;
         }
-
         /* end of text input styles */
         /* end of header-section styles */
-
         /* content area styles */
         #maintext.main-content {
             height: 100vh;
@@ -195,9 +210,7 @@
             font-size: 32px;
             color: #1784c7;
         }
-
         /* end of content area styles */
-
         /* menu styles */
         /* horizontal-menu styles */
         #header .header-list .horizontal-menu .e-menu-item {
@@ -211,10 +224,8 @@
         #header .e-menu-item .e-caret {
             line-height: 35px;
         }
-
         /* end of horizontal-menu styles */
         /* vertical-menu styles */
-
         #sidebar-menu .e-menu-wrapper ul .e-menu-item.e-menu-caret-icon {
             width: 220px;
         }
@@ -222,10 +233,8 @@
         #sidebar-menu .e-menu-wrapper ul .e-menu-item:hover, .e-menu-item.e-focused:hover {
             background-color: #3e454c !important;
         }
-
         /* end of vertical-menu styles */
         /* end of menu styles */
-
         /* Sidebar styles */
         /* docksidebar styles */
         .dock-menu .e-menu-wrapper ul .e-menu-item .e-caret,
@@ -291,14 +300,11 @@
             overflow: hidden;
         }
 
-
         #header ul {
             background-image: linear-gradient(315deg, #05e8ba 0%, #087ee1 74%) !important;
             color: #fff !important;
             overflow: hidden;
         }
-
-
         /* end of docksidebar styles */
         /*end of  Sidebar styles */
         /*main-menu-header  styles */
@@ -306,9 +312,7 @@
             padding: 4px 0px 0px 18px;
             color: white;
         }
-
         /*end of main-menu-header  styles */
-
         /*button styles */
         #sidebar-menu .action-btn {
             margin-left: 16px;
@@ -354,11 +358,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         /*end of body styles */
-
         /*icon styles */
-
-      
-
         #header .icon-menu:before {
             content: '\f35a';
             font-family: "Font Awesome 5 Free";
@@ -372,18 +372,11 @@
         #sidebar-menu .e-menu-icon::before {
             color: white;
         }
-
         /*icon styles */
     </style>
 
 
     <script type="text/javascript">
-
-        function pop(data) {
-            window.location.replace("http://" + window.location.host + "/Home/NavToProducts");
-
-        }
-
         new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
@@ -399,7 +392,7 @@
                             "text": "Login",
                             "url": "/account/Login",
                         }
-                    ] 
+                    ]
                 },
                 {
                     "text": "Home",
@@ -409,7 +402,7 @@
                 }
             ]
         }).appendTo("#horizontal-menubar");
-                new ejs.navigations.Menu({
+        new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
             "items": [
@@ -431,57 +424,83 @@
         $.ajax({
             url: "/Home/getCatagoryList",
         }).done(function (data) {
-
-
             new ejs.navigations.Menu({
                 "cssClass": "dock-menu",
                 "hoverDelay": 0.0,
                 "items": data,
                 "orientation": "Vertical"
             }).appendTo("#main-menubar");
-
         });
         new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
             "items": [
-                {                    "text": "Shops",                    "iconCss": "icon-sweets icon",                    "url": "/shops",                    "items": []                },
                 {
-                    "text": "Cart",                    "iconCss": "icon-sweets icon",                    "url": "/AddToCart/myOrder",                    "items": []
+                    "text": "Shops",
+                    "iconCss": "icon-sweets icon",
+                    "url": "/shops",
+                    "items": []
                 },
                 {
-                    "text": "Order History",                    "iconCss": "icon-sweets icon",                    "url": "/AddToCart/orderHistory",                    "items": []
+                    "text": "Cart",
+                    "iconCss": "icon-sweets icon",
+                    "url": "/AddToCart/myOrder",
+                    "items": []
+                },
+                {
+                    "text": "Order History",
+                    "iconCss": "icon-sweets icon",
+                    "url": "/AddToCart/orderHistory",
+                    "items": []
                 }
             ],
             "orientation": "Vertical"
         }).appendTo("#action-menubar");
-
-
-                new ejs.navigations.Menu({
+        new ejs.navigations.Menu({
             "cssClass": "dock-menu",
             "hoverDelay": 0.0,
             "items": [
-                                    {
-                    "text": "Add Item",
+                {
+                    "text": "Create",
                     "iconCss": "icon-sweets icon",
-                    "url": "/Products/Create",
-                    "items": []
+                    "items": [
+                        {
+                            "text": "Product",
+                            "iconCss": "icon-sweets icon",
+                            "url": "/Products/Create",
+                        },
+                        {
+                            "text": "Catagory",
+                            "iconCss": "icon-sweets icon",
+                            "url": "/Catagories/Create",
+                        },
+                        {
+                            "text": "ImageLinks",
+                            "iconCss": "icon-sweets icon",
+                            "url": "/ImageLinks/Create",
+                        },
+                        {
+                            "text": "Shops",
+                            "iconCss": "icon-sweets icon",
+                            "url": "/Shops/Create",
+                        },
+                        {
+                            "text": "New Product To Stock",
+                            "iconCss": "icon-sweets icon",
+                            "url": "/Stocks/Create",
+                        }
+                    ]
                 },
                 {
-                    "text": "Edit Item",
+                    "text": "Stocks",
                     "iconCss": "icon-sweets icon",
-                    "url": "/Products/Edit/1",
+                    "url": "/stocks",
                     "items": []
-                },
-                {                    "text": "Stocks",                    "iconCss": "icon-sweets icon",                    "url": "/stocks",                    "items":[]                }
-
-
-
+                }
             ],
             "orientation": "Vertical"
-                            }).appendTo("#admin-menubar");
-
-            new ejs.navigations.Sidebar({
+        }).appendTo("#admin-menubar");
+        new ejs.navigations.Sidebar({
             "dockSize": "50px",
             "enableDock": true,
             "target": ".main-content",
