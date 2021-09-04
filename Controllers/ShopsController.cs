@@ -104,7 +104,7 @@ namespace Caveret.Controllers
                 Twitter t = new Twitter();
                 _context.Add(shops);
                 await _context.SaveChangesAsync();
-                await t.SendText("New !!! Our Honey Now Come To Base: " + shops.Description + "Now Between " + shops.OpeningTime.ToLocalTime() + "To : " + shops.ClosingTime.ToLocalTime());
+                await t.SendText("New !!! Our Honey Now Come To Base: " + shops.Description + "Now Between " + shops.OpeningTime.TimeOfDay + "To : " + shops.ClosingTime.TimeOfDay);
                 return RedirectToAction(nameof(Index));
             }
             return View(shops);
