@@ -12,10 +12,10 @@ namespace Caveret.Models
 
         public int productId { get; set; }
 
-        [Display(Name = "מוצר")]
+        [Display(Name = "Product")]
         public Products product { get; set; }
 
-        [Display(Name = "כמות במלאי")]
+        [Display(Name = "Quantity")]
         public int quantity { get; set; }
     }
 }
