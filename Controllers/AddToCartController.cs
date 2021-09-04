@@ -105,14 +105,29 @@ namespace Caveret.Controllers
                 return RedirectToAction("Login", "Account");
             }
             List<Products> li = new List<Products>();
+            List<Products> MyOrder = new List<Products>();
             if (HttpContext.Session != null && HttpContext.Session.Get("cart") != null)
             {
 
                 li = GetProductsSession();
                 InsertProductsSession(li);
+                var listItems = li.GroupBy(prod => prod.Id).ToList();
+                
+                listItems.ForEach(prod =>
+                {
+                    Products p = new Products();
+                    p.Id = prod.Key;
+                    p.productName = _context.Products.FirstOrDefault(item => item.Id == prod.Key).productName + " X " +
+                                    li.Where(item => item.Id == prod.Key).Count();
+
+                    p.price = _context.Products.FirstOrDefault(item => item.Id == prod.Key).price *
+                              li.Where(item => item.Id == prod.Key).Count();
+
+                    MyOrder.Add(p);
+                });
             }
 
-            return View(li);
+            return View(MyOrder);
 
         }
         
@@ -148,18 +163,6 @@ namespace Caveret.Controllers
                 }
                 
             });
-            //var orderList = myOrders.Select(order => new Order
-            //{
-            //    id = order.Key,
-            //    price = (int)order.Sum(item => _context.Products.FirstOrDefault(prod => prod.Id == item.ProductsId).price * item.Quantity)
-            //}) ;
-           //var orderList =  _context.ShopCartItem.GroupBy(cart => cart.orderId).Select(cart =>
-           // new Order
-           // {
-           //     id = cart.Key,
-           //     price = (int)cart.Sum(prod => prod.Product.price)
-
-           // }) ;
 
             return View(MyOrders);
         }
@@ -244,7 +247,8 @@ namespace Caveret.Controllers
                });
                 
                 _context.SaveChanges();
-                return View("Index", "Home");
+
+                return RedirectToAction("Index", "Home");
 
             }
             //else

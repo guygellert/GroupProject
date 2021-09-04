@@ -90,16 +90,6 @@ namespace Caveret.Controllers
                 var data = await response.Content.ReadAsStringAsync();
                 fStram.Write(result);
                 fStram.Close();
-                //ReadOnlySpan<Byte> ros = new ReadOnlySpan<byte>(result);
-               
-                //SoundPlayer sp = new SoundPlayer(request.RequestUri + request.RequestUri.LocalPath);
-                //sp.Play();
-                //SoundPlayer s = new SoundPlayer();
-                //s.Stream = null;
-                //s.Stream = body;
-                //s.Stream.Position = 0;
-                //s.Play();
-                //Console.WriteLine(body);
             }
         }
 
@@ -107,6 +97,7 @@ namespace Caveret.Controllers
         {
             
             ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
+            ViewData["images"] = new SelectList(_context.ImageLink, nameof(ImageLink.Id), nameof(ImageLink.Address));
             //var products = _context.Products.Include(prod => prod.Catagories)
             //    .Where(prod => (prod.productName.Contains(queryName) || queryName == null) &&
             //                   (prod.price <= queryMaxPrice || queryMaxPrice == 0)
@@ -117,13 +108,18 @@ namespace Caveret.Controllers
             //           )
 
             var products = _context.Catagories.Include(cat => cat.products)
+                            
                            .Where(cat => (cat.Id.Equals(queryId) || queryId == null))
                            .SelectMany(cat => cat.products);
 
+            
+            products = from p in products
+                       join s in _context.Stock on p.Id equals s.productId
+                       where s.quantity >= 0
+                       select p;
             products = products.Where(prod => (prod.productName.Contains(queryName) || queryName == null) &&
                                               (prod.price <= queryMaxPrice || queryMaxPrice == 0))
-                                .Select(prod => prod);
-
+                                .Select(prod => prod).Include(img => img.imgUrl);
 
 
             return View("Index" ,  products);
@@ -133,13 +129,15 @@ namespace Caveret.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            
-            ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
 
-            var prod = from p in _context.Products
-                                  join s in _context.Stock on p.Id equals s.productId
-                                  where s.quantity >= 0
-                                  select p;
+            ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
+            ViewData["images"] = new SelectList(_context.ImageLink, nameof(ImageLink.Id), nameof(ImageLink.Address));
+
+            var caveretContext = _context.Products.Include(s => s.imgUrl);
+            var prod = from p in caveretContext
+                       join s in _context.Stock on p.Id equals s.productId
+                       where s.quantity >= 0
+                       select p;
             return View(await prod.ToListAsync());
         }
 
@@ -151,7 +149,8 @@ namespace Caveret.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var caveretContext = _context.Products.Include(s => s.imgUrl);
+            var products = await caveretContext
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
@@ -165,7 +164,8 @@ namespace Caveret.Controllers
         public IActionResult Create()
         {
             ViewData["catagories"] = new SelectList(_context.Catagories,nameof(Catagories.Id),nameof(Catagories.catagorieName));
-            
+            ViewData["images"] = new SelectList(_context.ImageLink, nameof(ImageLink.Id), nameof(ImageLink.Address));
+
             return View();
         }
 
@@ -174,7 +174,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,productName,price,description,imgUrlId")] Products products , int [] Catagories)
+        public async Task<IActionResult> Create([Bind("Id,productName,price,description,imgUrlId")] Products products , int [] Catagories, int imgUrl)
         {
             if (ModelState.IsValid)
             {
@@ -182,6 +182,7 @@ namespace Caveret.Controllers
                 //t.SendText("First Test Yay");
                 products.Catagories = new List<Catagories>();
                 products.Catagories.AddRange(_context.Catagories.Where(x => Catagories.Contains(x.Id)));
+                products.imgUrl = _context.ImageLink.Find(imgUrl);
                 _context.Add(products);
                 await _context.SaveChangesAsync();
                 textToSpeechPost(products);
@@ -199,6 +200,7 @@ namespace Caveret.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             ViewData["catagories"] = new SelectList(_context.Catagories, nameof(Catagories.Id), nameof(Catagories.catagorieName));
+            ViewData["images"] = new SelectList(_context.ImageLink, nameof(ImageLink.Id), nameof(ImageLink.Address));
             if (id == null)
             {
                 return NotFound();
@@ -221,7 +223,7 @@ namespace Caveret.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,productName,price,description,imgUrlId")] Products products, int[] Catagories)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,productName,price,description,imgUrlId")] Products products, int[] Catagories, int imgUrl)
         {
             if (id != products.Id)
             {
@@ -235,6 +237,7 @@ namespace Caveret.Controllers
 
                     products.Catagories = new List<Catagories>();
                     products.Catagories.AddRange(_context.Catagories.Where(x => Catagories.Contains(x.Id)));
+                    products.imgUrl = _context.ImageLink.Find(imgUrl);
                     _context.Update(products);
                     await _context.SaveChangesAsync();
                 }

@@ -21,15 +21,48 @@ namespace Caveret.Controllers
         }
 
         // GET: Stocks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString , int? pageNumber)
         {
-            var caveretContext = _context.Stock.Include(s => s.product);
+            ViewData["catagories"] = _context.Catagories.ToList();
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+            var caveretContext = from s in _context.Stock
+                                 join prod in _context.Products on s.id equals prod.Id
+                                 select new Stock { product = prod , id = s.id , quantity = s.quantity , productId = s.productId};
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                caveretContext = caveretContext.Where(s => s.product.productName.Contains(searchString));
+            }
+
+            var stock = new object();
             if (!User.IsInRole("Admin"))
             {
 
                 return View("../Home/Unauthorize");
             }
-            return View(await caveretContext.ToListAsync());
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    {
+                        caveretContext = caveretContext.OrderByDescending(s => s.product.productName);
+                        break;
+                    }
+                
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Stock>.CreateAsync(caveretContext.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Stocks/Details/5
@@ -164,49 +197,6 @@ namespace Caveret.Controllers
         }
         public JsonResult StocksByCategories()
         {
-            //var res = _context.Products
-            //           .Join(_context.Stock,
-            //                prod => prod.Id,
-            //                sto => sto.productId,
-            //                (prod,sto) => new
-            //                {
-            //                    ProductId = prod.Id,
-            //                    StockId = sto.id
-            //                })
-            //           .Join(_context.Catagories,
-            //                 prod => prod.ProductId,
-            //                 cat => cat.)
-            //var res = _context.Stock.Include(sto => sto.product)
-            //          .Join(_context.Products,
-            //                 sto => sto.productId,
-            //                 prod => prod.Id,
-            //                 (sto, prod) => new
-            //                 {
-            //                     StockId = sto.id,
-            //                     ProductId = prod.Id
-            //                 }
-            //                 )
-            //          .Join(_context.Catagories,
-            //                prod => prod.ProductId
-            //                cat => cat.Id
-            //                (prod,cat) => new 
-            //                {
-            //                    ProductId = cat.
-            //                }
-            //                )
-            //          .Select(sto => sto);
-
-            //var result = _context.Catagories.Include(c => c.products)
-            //             .Select(c =>
-            //new
-            //{
-            //    CategoryName = c.catagorieName,
-            //    Stocks = (from prod in _context.Products
-            //              where prod.Catagories.Select(cat => cat.Id).Contains(c.Id)
-            //              join sto in _context.Stock on prod.Id equals sto.productId
-            //              select sto.quantity).Sum()
-            //});
-
             var result = _context.Catagories.Include(cat => cat.products)
                 .GroupBy(cat => cat.catagorieName)
                 .Select(cat => 
@@ -224,7 +214,52 @@ namespace Caveret.Controllers
             result = result.Where(res => res.Stocks > 0);
             return Json(result);
         }
-        public JsonResult PossibleMaxCategory()
+        public JsonResult CategoryProfit()
+        {
+            var productsProfit = new object();
+            List<Catagories> cList = _context.Catagories.ToList();
+            List<object> stats = new List<object>();
+            //cList.ForEach(category =>
+            ////{
+            //    var products = _context.Catagories.Include(cat => cat.products)
+
+            //       .Where(cat => (cat.Id.Equals(category) || category == null))
+            //       .SelectMany(cat => cat.products);
+
+            //List<Catagories> cList = _context.Catagories.ToList();
+
+            cList.ForEach(category =>
+            {
+                var products = _context.Catagories.Include(cat => cat.products)
+                  .Where(cat => (cat.Id.Equals(category.Id) || category == null))
+                     .SelectMany(cat => cat.products);
+
+                var productsProfit = products.Select(prod =>
+                new 
+                {
+                    id = category.Id,
+                    CategoryName = prod.productName,
+                    Stocks = prod.price *
+                            _context.ShopCartItem.Where(cart => cart.ProductsId == prod.Id).Sum(cart => cart.Quantity)
+
+                }).ToList();
+                productsProfit.ForEach(prof =>
+                {
+                    if(prof.Stocks > 0)
+                    {
+                        stats.Add(prof);
+                    }
+                    
+                });
+            });
+
+            //var jsonPerCatgory =  stats.GroupBy(stat => stat.id);
+            //});
+            
+            //IEnumerable<satistics> results = stats.Where(stat => stat.Stocks > 0);
+            return Json(stats);
+        }
+            public JsonResult PossibleMaxCategory()
         {
             //var result = _context.Catagories.Include(c => c.products)
             // .Select(c =>

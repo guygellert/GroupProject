@@ -43,7 +43,7 @@ namespace Caveret
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(30);
+                //options.IdleTimeout = TimeSpan.FromSeconds();
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
