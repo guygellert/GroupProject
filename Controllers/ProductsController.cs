@@ -54,7 +54,7 @@ namespace Caveret.Controllers
                 { "f", "8khz_8bit_mono" },
                 { "c", "mp3" },
                 { "r", "0" },
-                { "hl", "he-il" },
+                { "hl", "en-us" },
                 { "src", p.productName },
             }),
             };
@@ -66,7 +66,7 @@ namespace Caveret.Controllers
                 byte[] result = response.Content.ReadAsByteArrayAsync().Result.ToArray();
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\voice", p.Id + ".mp3");
                 System.IO.MemoryStream ms = new System.IO.MemoryStream(result, true);
-                FileStream fStram = System.IO.File.Create(filePath);
+                FileStream fStram = new FileStream(filePath, FileMode.Create);
                 var data = await response.Content.ReadAsStringAsync();
                 fStram.Write(result);
                 fStram.Close();
@@ -289,6 +289,8 @@ namespace Caveret.Controllers
                         Catagories category = _context.Catagories.Where(ct => ct.Id == idCat).First();
                         prod.Catagories.Add(category);
                     }
+                    
+                    textToSpeechPost(products);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
