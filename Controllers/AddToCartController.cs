@@ -278,7 +278,9 @@ namespace Caveret.Controllers
                 
                 _context.SaveChanges();
 
-                return RedirectToAction("Index", "Home");
+
+                InsertProductsSession(new List<Products>());
+                return View("../Home/Success");
 
             }
             //else
