@@ -128,8 +128,9 @@ namespace Caveret.Controllers
             
             products = from p in products
                        join s in _context.Stock on p.Id equals s.productId
-                       where s.quantity >= 0
+                       where s.quantity > 0
                        select p;
+
             products = products.Where(prod => (prod.productName.Contains(queryName) || queryName == null) &&
                                               (prod.price <= queryMaxPrice || queryMaxPrice == 0))
                                 .Select(prod => prod).Include(img => img.imgUrl);
@@ -149,7 +150,7 @@ namespace Caveret.Controllers
             var caveretContext = _context.Products.Include(s => s.imgUrl);
             var prod = from p in caveretContext
                        join s in _context.Stock on p.Id equals s.productId
-                       where s.quantity >= 0
+                       where s.quantity > 0
                        select p;
             return View(await prod.ToListAsync());
         }
