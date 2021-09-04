@@ -193,7 +193,9 @@ namespace Caveret.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var products = _context.ShopCartItem.Where(cart => cart.orderId == id)
+
+            var userid = _userManager.Users.FirstOrDefault(user => user.Email == HttpContext.User.Identity.Name).Id.ToString();
+            var products = _context.ShopCartItem.Where(cart => cart.orderId == id && cart.userId == userid)
                         .Select(item => new Products
                         {
                             Id = item.ProductsId,
