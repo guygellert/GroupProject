@@ -16,6 +16,7 @@ namespace Caveret.Models
         public Products product { get; set; }
 
         [Display(Name = "Quantity")]
+        [Range(0,999999999)]
         public int quantity { get; set; }
     }
 }
